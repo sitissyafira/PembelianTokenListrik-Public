@@ -1,0 +1,222 @@
+<!-- Section One -->
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/facility-reservation']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Kembali</span>
+			</a>
+			<button href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSubmit(false)"
+				[disabled]="loading" mat-raised-button>
+				<span>Simpan</span>
+			</button>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<section class="facilityReservation">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="facilityForm" class="kt-form kt-form--group-seperator-dashed">
+					<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+						(close)="onAlertClose($event, '')">
+						Oh snap! Change a few things up and try submitting again.
+					</kt-alert>
+					<!-- Alert For Condition (start) -->
+					<kt-alert *ngIf="errorCond" type="warn" [showCloseButton]="true" [duration]="10000"
+						(close)="onAlertClose($event, 'cond')">
+						Jumlah orang tidak bisa melebihi {{isMaksOrderNumber}} maksimal orang per order
+					</kt-alert>
+					<!-- Alert For Condition (end) -->
+					<!-- Alert For Condition Quota (start) -->
+					<kt-alert *ngIf="errorCondQuota" type="warn" [showCloseButton]="true" [duration]="10000"
+						(close)="onAlertClose($event, 'condQuota')">
+						Jumlah orang tidak bisa melebihi kuota
+					</kt-alert>
+					<!-- Alert For Condition Quota (end) -->
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+
+							<div class="row form-input">
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Status Fasilitas</label>
+									<span class="ml-2 chip chip--done-confirm mb-4">
+										Open
+									</span>
+								</div>
+							</div>
+							<div class="row form-input-date">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Tanggal Reservasi</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" [matDatepicker]="reservationDate" [min]="minDate"
+											(click)="reservationDate.open()" (dateChange)="reservationDatePicker($event)"
+											autocomplete="off" />
+										<mat-datepicker-toggle class="ic-date" matSuffix [for]="reservationDate"></mat-datepicker-toggle>
+										<mat-datepicker #reservationDate></mat-datepicker>
+										<mat-error>Tanggal Reservasi is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6"
+										[ngClass]="isReservationDate ? '' : 'text-cstm-disabled'">Pilih Unit</label>
+									<!-- Auto Complete -->
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="text" class="inpt-custom" matInput [matAutocomplete]="unitAuto"
+											[formControl]="unitForm" [readonly]="!isReservationDate" (keyup)="_onKeyupUnit($event)">
+										<mat-error>Fill input by selecting the given items</mat-error>
+										<div class="form-loader d-none">
+											<mat-spinner [diameter]="10"></mat-spinner>
+										</div>
+										<mat-autocomplete #unitAuto="matAutocomplete">
+											<mat-option *ngFor="let item of unitResultFiltered ; let i = index"
+												[value]="item.cdunt | uppercase" (click)="unitOnChange(item._id)"> {{item.cdunt |
+												uppercase}}
+											</mat-option>
+										</mat-autocomplete>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6"
+										[ngClass]="isReservationDate ? '' : 'text-cstm-disabled'">Nama Tenant</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="customerName" autocomplete="off" readonly />
+										<mat-error>Nama Tenant is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6"
+										[ngClass]="isReservationDate ? '' : 'text-cstm-disabled'">Nomor telepon</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput onkeyup="this.value=this.value.replace(/[^\d]/,'')" class="inpt-custom"
+											[readonly]="!isReservationDate" autocomplete="off" formControlName="phone" />
+										<mat-error>Nomor telepon is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6"
+										[ngClass]="isReservationDate ? '' : 'text-cstm-disabled'">Kode Fasilitas</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="codeReservation" autocomplete="off" readonly />
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Section Two -->
+<kt-portlet>
+	<kt-portlet-header [title]="'Tentukan Reservasi Fasilitas'" [class]="'kt-portlet__head--lg'"
+		[viewLoading$]="loading$">
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<section class="facilityReservation">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="facilityForm" class="kt-form kt-form--group-seperator-dashed">
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6"
+										[ngClass]="isReservationDate ? '' : 'text-cstm-disabled'">Pilih Fasilitas</label>
+									<!-- Auto Complete -->
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="text" class="inpt-custom" matInput [matAutocomplete]="facAuto"
+											[formControl]="facilityFormChoosed" [readonly]="!isReservationDate"
+											(keyup)="_onKeyupFacility($event)">
+										<mat-error>Fill input by selecting the given items</mat-error>
+										<div class="form-loader d-none">
+											<mat-spinner [diameter]="10"></mat-spinner>
+										</div>
+										<mat-autocomplete #facAuto="matAutocomplete">
+											<mat-option class="el-choose-facility" *ngFor="let item of facilityResultFiltered ; let i = index"
+												[value]="item.facilityID.name | uppercase" (click)="facilityOnChange(item._id, item)">
+												{{item.facilityID.name | uppercase}}
+											</mat-option>
+										</mat-autocomplete>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row  mb-3">
+									<label for="crdate" class="label-custom col-sm-6"
+										[ngClass]="isReservationDate && isChooseTime ? '' : 'text-cstm-disabled'">Jumlah Orang</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="number" oninput="this.value = 
+										!!this.value && Math.abs(this.value) >= 1 ? Math.abs(this.value) : null" matInput class="inpt-custom"
+											[readonly]="isReservationDate && isChooseTime ? false : true" formControlName="people_qty"
+											autocomplete="off" />
+										<mat-error>Jumlah Orang is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="col-md-6 row  mb-3" [hidden]="!isMaksOrder">
+									<p class="text-danger">(* {{isMaksOrderNumber}} maksimal orang per order)</p>
+								</div>
+							</div>
+
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6"
+										[ngClass]="isReservationDate && isChooseTime ? '' : 'text-cstm-disabled'">Pilih Waktu</label>
+									<!-- Auto Complete -->
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="search" class="inpt-custom" matInput [matAutocomplete]="timeAuto"
+											[formControl]="timeForm" [readonly]="isReservationDate && isChooseTime ? false : true"
+											(keyup)="_onKeyupTime($event)">
+										<mat-error>Fill input by selecting the given items</mat-error>
+										<div class="form-loader d-none">
+											<mat-spinner [diameter]="10"></mat-spinner>
+										</div>
+										<mat-autocomplete #timeAuto="matAutocomplete">
+											<mat-option class="el-choose-facility" *ngFor="let item of timeResultFiltered ; let i = index"
+												[value]="'Waktu ' + item.time_index + ' ( ' + item.startTime + ' - '  + item.endTime + ' )'"
+												(click)="timeOnChange(item)">
+												{{'Waktu ' + item.time_index + ' ( ' + item.startTime + ' - ' + item.endTime + ' )'}}
+											</mat-option>
+										</mat-autocomplete>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6" style="color: #21E157;">Info Sisa Kuota</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="maxPeople" autocomplete="off" readonly />
+										<mat-error>Info Maksimal Orang per Order is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>

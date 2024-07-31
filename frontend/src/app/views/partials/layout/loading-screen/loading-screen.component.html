@@ -1,0 +1,10 @@
+<div class="loading-screen" *ngIf="loading">
+  <img 
+    style="width: 50px;position: absolute; bottom: 0; right: 0;" 
+    *ngIf="loaderType === 'spinner-logo'" 
+    [attr.src]="loaderLogo" 
+    alt="Logo">
+  <mat-spinner diameter="100"></mat-spinner>
+  <br/>
+  <a style="font-weight: bold; font-size: larger;">{{message}}</a>
+</div>

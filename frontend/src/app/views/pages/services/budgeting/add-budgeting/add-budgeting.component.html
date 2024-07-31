@@ -1,0 +1,274 @@
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/budgeting']" class="btn btn-secondary kt-margin-r-10" mat-raised-button >
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<button href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSubmit(false)" [disabled]="loading" mat-raised-button >
+				<span class="kt-hidden-mobile">Save</span>
+			</button>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<mat-tab-group [(selectedIndex)]="selectedTab">
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-user"></i>
+					Budgeting Info
+				</ng-template>
+				<ng-template matTabContent>
+					<!--begin::Form-->
+					<div *ngIf="budgeting">
+						<form [formGroup]="budgetingForm" class="kt-form kt-form--group-seperator-dashed">
+							<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+								Oh snap! Change a few things up and try submitting again.
+							</kt-alert>
+							<kt-alert *ngIf="overBudget" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+								Over Budget
+							</kt-alert>
+							<div class="kt-form__section kt-form__section--first">
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-5 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Account Type" formControlName="account_type">
+												<mat-option *ngIf="loadingData.acctType">
+													<div class="opt-loader">
+														<mat-spinner [diameter]="15"></mat-spinner>
+													</div>
+												</mat-option>
+												<mat-option *ngIf="!loadingData.acctType && !typeResult.length">Item is empty</mat-option>	
+												<mat-option *ngFor="let item of typeResult" [value]="item._id" (click)="selectTypeChange(item._id)">
+													{{ item.acctype | titlecase }}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-5 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Account" formControlName="account">
+												<mat-option *ngIf="loadingData.acct">
+													<div class="opt-loader">
+														<mat-spinner [diameter]="15"></mat-spinner>
+													</div>
+												</mat-option>
+												<mat-option *ngIf="!loadingData.acct && !accountResult.length">Item is empty</mat-option>	
+												<mat-option *ngFor="let item of accountResult" [value]="item._id" (onSelectionChange)="selectFormChange(item._id)">
+													{{ item.acctNo }} - {{ item.acctName }}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-2 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Year" formControlName="year"/>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Type Budgeting" formControlName="type_budget" (selectionChange)="getbudget()">
+													<mat-option value="custom">Custom</mat-option>
+													<mat-option value="samarata">Rates</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Opening Balance"
+												formControlName="nominal_budget"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getbudget()">
+										</mat-form-field>
+									</div>
+									
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Actual Balance"
+												formControlName="actual_budget"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30">
+										</mat-form-field>
+									</div>
+								</div>				
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 1"
+												formControlName="period1"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 2"
+												formControlName="period2"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 3"
+												formControlName="period3"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 4"
+												formControlName="period4"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 5"
+												formControlName="period5"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 6"
+												formControlName="period6"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 7"
+												formControlName="period7"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 8"
+												formControlName="period8"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 9"
+												formControlName="period9"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 10"
+												formControlName="period10"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 11"
+												formControlName="period11"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Period 12"
+												formControlName="period12"
+												autocomplete="off"
+												(keydown)="inputKeydownHandler($event)"
+												maxlength="30"
+												(change)="getActual()">
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-12 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input
+												matInput
+												placeholder="Remark"
+												formControlName="remark"
+												autocomplete="off"
+												maxlength="30">
+										</mat-form-field>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!--end::Form-->
+				</ng-template>
+			</mat-tab>
+		</mat-tab-group>
+	</kt-portlet-body>
+</kt-portlet>
+

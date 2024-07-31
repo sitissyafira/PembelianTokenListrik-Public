@@ -1,0 +1,91 @@
+
+<ng-template [ngIf]="!loading && data" [ngIfElse]="onLoading">
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+		  <h1 class="title col-md-2">Package</h1>
+		  <!-- <span class="line col-md-10"></span> -->
+	</div>
+
+
+  
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-12">
+      <div class="ds-panel full-height bg-red">
+        <div class="row">
+          <div class="col-md-4 pl-0 d-flex align-items-center justify-content-center">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/package.svg'"></span>
+          </div>
+          <div class="col-md-4 d-flex align-items-center">
+            <span class="ds-panel__label">Total Package</span>
+          </div>
+        </div>
+        <div class="offset-md-4 col-md-8">
+          <span class="ds-panel__value">{{ data?.packageManagement.all }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-4">
+      <div class="ds-panel full-height bg-white">
+        <div class="row">
+          <div class="col-md-6  align-items-center">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/packagein.svg'"></span>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <span class="ds-panel_valueIN">{{ data?.packageManagement.in }}</span>
+          </div>
+        </div>
+        <div class="offset-md-5 col-md-8">
+          <span class="ds-panel_valueINPackage">Package In</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="ds-panel full-height bg-white">
+        <div class="row">
+          <div class="col-md-6 align-items-center">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/packageout.svg'"></span>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <span class="ds-panel_valueOut">{{ data?.packageManagement.out }}</span>
+          </div>
+        </div>
+        <div class="offset-md-5 col-md-8">
+          <span class="ds-panel_valueOutPackage">Package Out</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="ds-panel full-height bg-white">
+        <div class="row" style="margin-top: 2%;">
+          <div class="col-md-6 align-items-center" style="margin-top: 7%;"> 
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/packagedone.svg'"></span>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <span class="ds-panel_valueCON">{{ data?.packageManagement.confirmed }}</span>
+          </div>
+        </div>
+        <div class="offset-md-5 col-md-8">
+          <span class="ds-panel_valueCONPackage">Package Confirmed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #onLoading>
+  <div *ngIf="loading; else hasError" class="col-md-12 loader animated">
+    <mat-spinner diameter="35"></mat-spinner>
+    <p>Loading Content</p>
+  </div>
+
+  <ng-template #hasError>
+    <div class="col-md-12 failure animated">
+      <p>Something went wrong, click the button below to try again.</p>
+      <button (click)="loadData()">
+        Let's try again
+      </button>
+    </div>
+  </ng-template>
+</ng-template>

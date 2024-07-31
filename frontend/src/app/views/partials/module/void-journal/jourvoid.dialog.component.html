@@ -1,0 +1,80 @@
+<!-- ============== Pop Up Input============== -->
+<div class="modalprocessgenerate">
+	<div>
+		<div class="modal-body process-generate">
+			<h3 mat-dialog-title class="row text-center sty-default">Are you sure you want to delete Billing
+				<br> with number <span class="font-weight-bolder">{{data?.dataJournal?.voucherno}}</span> ?
+			</h3>
+			<div class="kt-portlet__body">
+				<div class="processing">
+					<div>
+						<kt-portlet-body>
+							<section class="billDelete">
+								<div class="section">
+									<!-- Form Input START -->
+									<form [formGroup]="billdelForm" class="kt-form kt-form--group-seperator-dashed">
+										<div class="kt-form__section kt-form__section--first">
+											<div class="form-group mt-2">
+												<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+													(close)="onAlertClose($event)">
+													Oh snap! Change a few things up and try submitting again.
+												</kt-alert>
+												<div class="row form-input">
+													<div class="col-md-12 row mb-3">
+														<label for="crdated" class="label-custom col-sm-3">Reason Delete</label>
+														<mat-form-field matInput class="inpt-custom mat-form-field-fluid col-sm-6">
+															<mat-select class="inpt-custom" formControlName="reasonDel">
+																<mat-option value="copd">Correction of payment data</mat-option>
+																<mat-option value="imdi">Improved meter data input</mat-option>
+																<mat-option value="sttd">Set the transaction date</mat-option>
+															</mat-select>
+															<mat-error>Reason Delete is
+																<strong>required</strong>
+															</mat-error>
+														</mat-form-field>
+													</div>
+												</div>
+												<div class="row form-input">
+													<div class="col-md-12 row mb-3 d-flex flex-direction">
+														<label for="crdated" class="label-custom col-sm-3">Description</label>
+														<mat-form-field class="mat-form-field-fluid col-sm-9">
+															<textarea matInput class="inpt-custom txt-area-custom" formControlName="descriptionDelete"
+																autocomplete="off" rows="4">
+													</textarea>
+															<mat-error>Description is
+																<strong>required</strong>
+															</mat-error>
+														</mat-form-field>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+									<!-- Form Input END -->
+								</div>
+							</section>
+						</kt-portlet-body>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" (click)="closed()">Close</button>
+			<button type="button" class="btn btn-danger" (click)="validateDelete(areyousure)">Delete</button>
+		</div>
+	</div>
+</div>
+
+<!-- ============== Pop Up Konfirmasi ============== -->
+<div class="areyousure">
+	<ng-template #areyousure let-c="close" let-d="dismiss">
+		<div class="p-3">
+			<h3 class="text-center">Are you sure delete ?</h3>
+
+			<div class="button d-flex justify-content-center mt-3">
+				<button type="button" class="btn btn-secondary mr-3" (click)="closedNoSure()">No</button>
+				<button type="button" class="btn btn-danger" (click)="clickDeleted()">Yes</button>
+			</div>
+		</div>
+	</ng-template>
+</div>

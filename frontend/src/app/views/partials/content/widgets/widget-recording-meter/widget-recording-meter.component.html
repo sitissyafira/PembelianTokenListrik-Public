@@ -1,0 +1,46 @@
+<div class="col-12 border rounded mb-4">
+	<h4 class="ml-2 progress-total-header">{{data.title}} {{data.date}}</h4>
+	<div *ngIf="data.list" class="mat-table__wrapper">
+		<table mat-table [dataSource]="data.list">
+
+			<!--- Note that these columns can be defined in any order.
+			  The actual rendered columns are set as a property on the row definition" -->
+
+			<!-- Position Column -->
+			<ng-container matColumnDef="position">
+				<th mat-header-cell *matHeaderCellDef> # </th>
+				<td mat-cell *matCellDef="let element; let id = index"> {{ id + 1 }} </td>
+			</ng-container>
+
+			<!-- Name Column -->
+			<ng-container matColumnDef="title">
+				<th mat-header-cell *matHeaderCellDef> Name </th>
+				<td mat-cell *matCellDef="let element"> {{element.title}} </td>
+			</ng-container>
+
+			<!-- Weight Column -->
+			<ng-container matColumnDef="progress">
+				<th mat-header-cell *matHeaderCellDef> Progress </th>
+				<td mat-cell *matCellDef="let element">
+					<mat-progress-bar [mode]="determinate" [value]="element.value" [bufferValue]="element.value">
+					</mat-progress-bar>
+				</td>
+			</ng-container>
+
+			<!-- Symbol Column -->
+			<ng-container matColumnDef="total">
+				<th mat-header-cell *matHeaderCellDef> Amount </th>
+				<td mat-cell *matCellDef="let element">
+					<span class="progress-total" [ngClass]="element.color">
+						{{element.value}} / {{element.total}}
+					</span>
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+
+
+</div>

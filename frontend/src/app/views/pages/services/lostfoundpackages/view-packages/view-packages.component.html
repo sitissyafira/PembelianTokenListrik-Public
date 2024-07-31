@@ -1,0 +1,323 @@
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/lostandfound']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<mat-tab-group [(selectedIndex)]="selectedTab">
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-user"></i>
+					<p class="sty-default m-0 p-0"> Package Information </p>
+				</ng-template>
+				<section class="packageManagement" style="overflow: hidden">
+					<div class="section">
+						<!-- Form Input START -->
+						<form class="kt-form kt-form--group-seperator-dashed">
+							<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+								(close)="onAlertClose($event)">
+								Oh snap! Change a few things up and try submitting again.
+							</kt-alert>
+							<div class="kt-form__section kt-form__section--first">
+								<div class="form-group">
+
+									<div class="row form-input">
+										<div class="col-md-6 row ">
+											<label for="crdate" class="label-custom col-sm-6">Package Status</label>
+											<span class="ml-2 chip mb-4" [ngClass]="packages?.package_status === 'wait-confirm' ? 'chip--wait-confirm' :
+												 packages?.package_status === 'done-confirm' ? 'chip--done-confirm':
+												 packages?.package_status === 'done' ? 'chip--done': 'chip--danger'">
+												{{modulePackage.changeStatus(packages?.package_status)}}
+											</span>
+										</div>
+									</div>
+
+									<div class="row form-input-date">
+										<div class="col-md-6 row mb-3">
+											<label for="crdate" class="label-custom col-sm-6">Date of Entry</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" [formControl]="packageInformation.entryDate" readonly />
+												<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+												<mat-error>Date of Entry is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+
+										<div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Time of Entry</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" [formControl]="packageInformation.entryTime" readonly />
+												<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+												<mat-error>Time of Entry is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+									<div class="row form-input">
+										<div class="col-md-6 row mb-3">
+											<label for="crdate" class="label-custom col-sm-6">Unit</label>
+											<!-- Auto Complete -->
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input type="text" class="inpt-custom" matInput [matAutocomplete]="csmrAuto"
+													[formControl]="packageInformation.unit" readonly>
+												<mat-error>Fill input by selecting the given items</mat-error>
+												<div class="form-loader d-none">
+													<mat-spinner [diameter]="10"></mat-spinner>
+												</div>
+												<mat-autocomplete #csmrAuto="matAutocomplete">
+													<mat-option *ngFor="let item of unitResult" [value]="item.cdunt | uppercase"
+														(click)="unitOnChange(item._id)">
+														{{item.cdunt | uppercase }}
+													</mat-option>
+												</mat-autocomplete>
+											</mat-form-field>
+										</div>
+
+										<div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Customer Name</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" [formControl]="packageInformation.cstmr" autocomplete="off"
+													readonly />
+												<mat-error>Customer Name is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+									<div class="row form-input">
+										<div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Package ID</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" [formControl]="packageInformation.packageId"
+													autocomplete="off" readonly />
+												<mat-error>Package ID is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<!-- Form Input END -->
+					</div>
+				</section>
+			</mat-tab>
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-user"></i>
+					<p class="sty-default m-0 p-0"> Image </p>
+				</ng-template>
+				<section class="packageManagement row">
+					<div class="section col-lg-4" style="border-right: 2px solid rgba(0, 0, 0, 0.221)">
+						<h5 class="sty-default">Package In</h5>
+						<div class="form-image-container">
+							<a target="blank" *ngFor="let image of packages?.attachment" href="{{image}}">
+								<img crossorigin="anonymous" width="250" class="mr-2 mb-2" src="{{image}}">
+							</a>
+							<div class="no-image" *ngIf="!packages?.attachment || packages?.attachment.length === 0">
+								<span>No image attached!</span>
+							</div>
+						</div>
+					</div>
+					<div class="section col-lg-4" style="border-right: 2px solid rgba(0, 0, 0, 0.221)">
+						<h5 class=" sty-default">Recipient Picture</h5>
+						<div class="form-image-container">
+							<a target="blank" *ngFor="let image of packages?.handoverAttachment" href="{{image}}">
+								<img crossorigin="anonymous" width="250" class="mr-2 mb-2" src="{{image}}">
+							</a>
+							<div class="no-image" *ngIf="!packages?.handoverAttachment || packages?.handoverAttachment.length === 0">
+								<span>No image attached!</span>
+							</div>
+						</div>
+					</div>
+					<div class="section col-lg-4">
+						<h5 class="sty-default">Proof of Receipt (from tenant)</h5>
+						<div class="form-image-container">
+							<a target="blank" *ngFor="let image of packages?.receivedAttachment" href="{{image}}">
+								<img crossorigin="anonymous" width="250" class="mr-2 mb-2" src="{{image}}">
+							</a>
+							<div class="no-image" *ngIf="!packages?.receivedAttachment || packages?.receivedAttachment.length === 0">
+								<span>No image attached!</span>
+							</div>
+						</div>
+					</div>
+				</section>
+			</mat-tab>
+		</mat-tab-group>
+
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- section two -->
+<kt-portlet>
+	<kt-portlet-header [title]="'Rincian Paket'" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<section class="packageManagement">
+			<div class="section">
+				<!-- Form Input START -->
+				<!-- Multi Package START-->
+				<div class="kt-form">
+					<div class="mat-table__wrapper">
+
+						<mat-table class="lmat-elevation-z8" mat-table #myTable [dataSource]="pkgList" matSort #sort1="matSort"
+							matSortDirection="asc" matSortDisabledClear>
+
+							<ng-container matColumnDef="category">
+								<mat-cell *matCellDef="let cc; let id = index">
+									<div class="col-md-12 kt-margin-bottom-20-mobile">
+										<div>
+											<mat-form-field class="mat-form-field-fluid ">
+												<input type="text" placeholder="Category" class="inpt-custom" matInput
+													[value]="cc.category.name" readonly [matAutocomplete]="category">
+												<mat-error>Fill input by selecting the given items</mat-error>
+												<div class="form-loader d-none">
+													<mat-spinner [diameter]="10"></mat-spinner>
+												</div>
+												<mat-autocomplete #category="matAutocomplete">
+													<mat-option *ngFor="let item of categoryResult" [value]="item.name | titlecase"
+														(click)="categoryOnChange(id, 'category', item._id)">
+														{{item.name | titlecase }}
+													</mat-option>
+												</mat-autocomplete>
+											</mat-form-field>
+										</div>
+									</div>
+								</mat-cell>
+							</ng-container>
+
+							<ng-container matColumnDef="sender">
+								<mat-cell *matCellDef="let cc; let id = index">
+									<div class="col-md-12 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input readonly class="inpt-custom" matInput placeholder="Sender" [value]="cc.sender"
+												(change)="changeValue(id, 'sender', $event)" />
+										</mat-form-field>
+									</div>
+								</mat-cell>
+							</ng-container>
+
+							<ng-container matColumnDef="qty">
+								<mat-cell *matCellDef="let cc; let id = index">
+									<div class="col-md-12 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input readonly class="inpt-custom" matInput type="number" placeholder="Quantity" class="mt-2"
+												[value]="cc.qty" min="0"
+												oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : undefined"
+												onKeyPress="if(this.value.length==21) return false;" (change)="changeValue(id, 'qty', $event)">
+										</mat-form-field>
+									</div>
+								</mat-cell>
+							</ng-container>
+
+							<ng-container matColumnDef="action">
+								<mat-header-cell *matHeaderCellDef>actions</mat-header-cell>
+								<mat-cell *matCellDef="let cc; let id = index">
+									<button mat-icon-button color="primary" matTooltip="Add Field" type="button" (click)="addCC(id)"
+										[disabled]="true">
+										<mat-icon>add</mat-icon>
+									</button>
+									<button mat-icon-button color="warn" matTooltip="Delete Field" type="button" (click)="removeCC(id)"
+										[disabled]="true">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</mat-cell>
+							</ng-container>
+
+							<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+						</mat-table>
+					</div>
+				</div>
+				<!-- Multi Package END -->
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- section three -->
+<kt-portlet>
+	<kt-portlet-header [title]="'Detail Penerima'" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<section class="packageManagement">
+			<div class="section">
+				<!-- Form Input START -->
+				<form class="kt-form kt-form--group-seperator-dashed">
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+
+							<div class="row form-input" [hidden]="!packages?.receiveDetail" [hidden]="!packages?.receiveDetail">
+								<div class="col-md-6 row  mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Recipient Name</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput (change)="changeValueReceive($event, 'name')" class="inpt-custom" autocomplete="off"
+											readonly [formControl]="packageReceive.receive_name" />
+										<mat-error>Nama Penerima is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Phone Number</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput (change)="changeValueReceive($event, 'phone')" class="inpt-custom"
+											autocomplete="off" readonly [formControl]="packageReceive.phone_number" />
+										<mat-error>Customer Name is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input-date" [hidden]="!packages?.receiveDetail">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Date of Receipt</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" readonly [formControl]="packageReceive.receive_date">
+										<mat-datepicker-toggle class=" ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Date of Receipt is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Recipient Time</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" readonly [formControl]="packageReceive.receive_time" />
+										<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Recipient Time is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<hr [hidden]="!packages?.receiveDetail">
+							<div class="row form-input mt-5">
+								<div class="col-md-6 row  mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Notes</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput (change)="changeValueReceive($event, 'remarks')" class="inpt-custom" readonly
+											[formControl]="packageReceive.remarks" autocomplete="off" />
+										<mat-error>Notes is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>

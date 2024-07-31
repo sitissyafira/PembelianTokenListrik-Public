@@ -1,0 +1,210 @@
+<ng-template [ngIf]="!loading && dashboardData" [ngIfElse]="onLoading" class="container">
+  <ng-template [ngIf]=" role == 'administrator' || role == 'sdm'">
+    <!-- <button mat-raised-button class="mr-2" (click)="setRefresh();loadData()">Refresh
+        refresh
+      </button> -->
+    <div class="row mb-4">
+      <!-- start content  -->
+      <div class="col-sm-12 col-md-8">
+        <!-- start unit information -->
+        <widget-unit-information [total]="dashboardData.unit.total" [bast]="dashboardData.unit.bast"
+          [available]="dashboardData.unit.available"></widget-unit-information>
+        <!-- start unit information -->
+        <!-- start ticket -->
+        <div class="row mb-4">
+          <div class="col-sm-6"><widget-ticket title="Private Area"
+              [graph]="dashboardData.ticket.private.graph"></widget-ticket></div>
+          <div class="col-sm-6"><widget-ticket title="Public Area"
+              [graph]="dashboardData.ticket.public.graph"></widget-ticket></div>
+        </div>
+        <!-- start billing progress -->
+        <widget-billing-payment [data]="dashboardData.billing.payment"></widget-billing-payment>
+        <!-- end billing progress -->
+        <!-- start recording progress -->
+        <widget-recording-meter [data]="progressRecording"></widget-recording-meter>
+        <!-- end recording progress-->
+      </div>
+      <!-- end content -->
+      <!-- start side -->
+      <div class="col-sm-11 col-md-4">
+        <!-- start notification -->
+        <div class="d-flex">
+          <h4 class="notif header mr-auto">Notifications</h4>
+          <!-- <button mat-raised-button class="mr-2" > -->
+          <span (click)="setRefresh();loadData()"><mat-icon class="ic-refresh">refresh</mat-icon></span>
+          <!-- </button> -->
+          <p>Today</p>
+        </div>
+        <widget-notification class="mb-3" [data]="notificationsList" [role]="role"></widget-notification>
+        <!-- end notification -->
+
+        <!-- start profit loss chart -->
+        <div class="py-2 px-2">
+          <widget-profit-loss [period]="dashboardData.revenue.period"
+            [profitPercentage]="dashboardData?.profitLoss.profitPercentage"
+            [profitAmount]="serviceFormat.rupiahFormatImprovement(dashboardData ? dashboardData.profitLoss.profitAmount : 0) "
+            [lossPercentage]="dashboardData.profitLoss.lossPercentage"
+            [lossAmount]="serviceFormat.rupiahFormatImprovement(dashboardData ? dashboardData.profitLoss.lossAmount : 0)   "
+            [graph]="dashboardData.profitLoss.graph"></widget-profit-loss>
+        </div>
+        <div class="py-2 px-2">
+          <widget-revenue [label]="dashboardData.revenue.label" [graph]="dashboardData.revenue.graph"
+            [period]="dashboardData.revenue.period"
+            [totalAmount]="serviceFormat.rupiahFormatImprovement(dashboardData ? dashboardData.revenue.totalAmount : 0)"></widget-revenue>
+        </div>
+      </div>
+      <!-- end side -->
+    </div>
+
+    <div class="border rounded p">
+      <widget-target [desc]="dashboardData.billing.collections.period"
+        [target]="dashboardData.billing.collections.target"
+        [achievement]="dashboardData.billing.collections.achievement"></widget-target>
+    </div>
+
+  </ng-template>
+
+
+  <ng-template [ngIf]="role == 'admin-tro'">
+    <div class="row mb-4">
+      <!-- start content  -->
+      <div class="col-sm-8">
+        <!-- start unit information -->
+        <widget-unit-information [total]="dashboardData.unit.total" [bast]="dashboardData.unit.bast"
+          [available]="dashboardData.unit.available"></widget-unit-information>
+        <!-- start unit information -->
+        <!-- start ticket -->
+        <div class="row mb-4">
+          <div class=" col-sm-6"><widget-ticket title="Private Area"
+              [graph]="dashboardData.ticket.private.graph"></widget-ticket></div>
+          <div class="col-sm-6"><widget-ticket title="Public Area"
+              [graph]="dashboardData.ticket.public.graph"></widget-ticket></div>
+        </div>
+        <!-- start billing progress -->
+        <widget-billing-payment [data]="dashboardData.billing.payment"></widget-billing-payment>
+        <!-- end billing progress -->
+        <!-- start recording progress -->
+        <widget-recording-meter [data]="progressRecording"></widget-recording-meter>
+        <!-- end recording progress-->
+      </div>
+      <!-- end content -->
+      <!-- start side -->
+      <div class="col-4">
+        <!-- start notification -->
+        <div class="d-flex">
+          <h4 class="notif header mr-auto">Notifications</h4>
+          <!-- <button mat-raised-button class="mr-2" > -->
+          <span (click)="setRefresh();loadData()"><mat-icon class="ic-refresh">refresh</mat-icon></span>
+          <!-- </button> -->
+          <p>Today</p>
+        </div>
+        <widget-notification [data]="notificationsList" [role]="role"></widget-notification>
+        <!-- end notification -->
+      </div>
+      <!-- end side -->
+    </div>
+  </ng-template>
+
+
+  <ng-template [ngIf]="(role == 'engineer' || role == 'admin-engineer' || role == 'spv-engineer')">
+    <div class="row mb-4">
+      <!-- start content  -->
+      <div class="col-sm-8">
+        <!-- start unit information -->
+        <widget-unit-information [total]="dashboardData.unit.total" [bast]="dashboardData.unit.bast"
+          [available]="dashboardData.unit.available"></widget-unit-information>
+        <!-- start unit information -->
+        <!-- start ticket -->
+        <div class="row mb-4">
+          <div class=" col-sm-6"><widget-ticket title="Private Area"
+              [graph]="dashboardData.ticket.private.graph"></widget-ticket></div>
+          <div class="col-sm-6"><widget-ticket title="Public Area"
+              [graph]="dashboardData.ticket.public.graph"></widget-ticket></div>
+        </div>
+        <!-- start recording progress -->
+        <widget-recording-meter [data]="progressRecording"></widget-recording-meter>
+        <!-- end recording progress-->
+      </div>
+      <!-- end content -->
+      <!-- start side -->
+      <div class="col-4">
+        <!-- start notification -->
+        <div class="d-flex">
+          <h4 class="notif header mr-auto">Notifications</h4>
+          <!-- <button mat-raised-button class="mr-2" > -->
+          <span (click)="setRefresh();loadData()"><mat-icon class="ic-refresh">refresh</mat-icon></span>
+          <!-- </button> -->
+          <p>Today</p>
+        </div>
+        <widget-notification [data]="notificationsList" [role]="role"></widget-notification>
+        <!-- end notification -->
+      </div>
+      <!-- end side -->
+    </div>
+  </ng-template>
+
+
+  <ng-template [ngIf]=" role == 'admin-finance' || role == 'spv-finance'">
+    <div class="row mb-4">
+      <!-- start content  -->
+      <div class="col-sm-8">
+        <!-- start ticket -->
+        <div class="row mb-4">
+          <div class="col-sm-6">
+            <widget-profit-loss style="min-height: 25%; max-height: 25%;"
+              [profitPercentage]="dashboardData?.profitLoss.profitPercentage"
+              [profitAmount]="dashboardData.profitLoss.profitAmount"
+              [lossPercentage]="dashboardData.profitLoss.lossPercentage"
+              [lossAmount]="dashboardData.profitLoss.lossAmount"
+              [graph]="dashboardData.profitLoss.graph"></widget-profit-loss>
+          </div>
+          <div class="col-sm-6">
+            <widget-revenue style="min-height: 25%; max-height: 25%;" [label]="dashboardData.revenue.label"
+              [graph]="dashboardData.revenue.graph" [period]="dashboardData.revenue.period"
+              [totalAmount]="serviceFormat.rupiahFormatImprovement(dashboardData ? dashboardData.revenue.totalAmount : 0)"></widget-revenue>
+          </div>
+        </div>
+        <!-- start billing progress -->
+        <widget-billing-payment [data]="dashboardData.billing.payment"></widget-billing-payment>
+        <!-- end billing progress -->
+      </div>
+      <!-- end content -->
+      <!-- start side -->
+      <div class="col-4">
+        <!-- start notification -->
+        <div class="d-flex">
+          <h4 class="notif header mr-auto">Notifications</h4>
+          <!-- <button mat-raised-button class="mr-2" > -->
+          <span (click)="setRefresh();loadData()"><mat-icon class="ic-refresh">refresh</mat-icon></span>
+          <!-- </button> -->
+          <p>Today</p>
+        </div>
+        <widget-notification [data]="notificationsList" [role]="role"></widget-notification>
+        <!-- end notification -->
+      </div>
+      <!-- end side -->
+    </div>
+
+    <div class="border rounded p">
+      <widget-target [desc]="dashboardData.billing.collections.period"
+        [target]="dashboardData.billing.collections.target"
+        [achievement]="dashboardData.billing.collections.achievement"></widget-target>
+    </div>
+
+  </ng-template>
+</ng-template>
+<ng-template #onLoading>
+  <div *ngIf="loading; else hasError" class="col-md-12 loader animated">
+    <mat-spinner diameter="35"></mat-spinner>
+    <p>Loading Content</p>
+  </div>
+
+  <ng-template #hasError>
+    <div class="col-md-12 failure animated">
+      <p>Something went wrong, click the button below to try again.</p>
+      <button (click)="loadData()">
+        Let's try again
+      </button>
+    </div>
+  </ng-template>
+</ng-template>

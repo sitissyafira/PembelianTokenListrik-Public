@@ -1,0 +1,272 @@
+.panel-inline-grouping {
+  padding-left: 20px;
+  padding-right: 0;
+}
+
+.line {
+	// width: 20%;
+	height: 2px;
+	background-color: black;
+  // margin-right: 1%;
+}
+
+.ds-panel {
+  margin-bottom: 20px;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+
+  &.bg-blue {
+    background-color: #5C94FF;
+    color: #ffffff;
+  }
+  &.bg-orange {
+    background-color: #E7B201;
+    color: #ffffff;
+  }
+  &.bg-red {
+    background-color: #DC6464;
+    color: #ffffff;
+  }
+  &.bg-brown {
+    background-color: #8D7044;
+    color: #ffffff;
+  }
+  &.bg-pink {
+    background-color: #C364DA;
+    color: #ffffff;
+  }
+  &.bg-white {
+    background-color: #FFFFFF;
+    color: #ffffff;
+  }
+
+  .ds-panel__label {
+    font-size: 32px;
+  }
+
+  .ds-panel__value {
+    font-size: 60px;
+    font-weight: 600;
+    
+  }
+  
+  .ds-panel_valueIN{
+    font-size: 50px;
+    font-weight: 600;
+    color: #6171F9;
+  }
+
+  .ds-panel_valueINPackage{
+    font-size: 15px;
+    font-weight: 600;
+    color: #6171F9;
+  }
+
+  .ds-panel_valueOut{
+    font-size: 50px;
+    font-weight: 600;
+    color: #E7B201;
+  }
+
+  .ds-panel_valueOutPackage{
+    font-size: 15px;
+    font-weight: 600;
+    color: #E7B201;
+  }
+  
+
+  .ds-panel_valueCON{
+    font-size: 50px;
+    font-weight: 600;
+    color: #81D07A;
+  }
+
+  .ds-panel_valueCONPackage{
+    font-size: 15px;
+    font-weight: 600;
+    color: #81D07A;
+  }
+  
+  &.full-width {
+    padding-left: 45px;
+    padding-right: 45px;
+    
+    .ds-panel__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .kt-grid-nav__icon > svg {
+        max-height: 150px;
+      }
+    }
+
+    .ds-panel__section {
+      &:not(.has-multiple-child) {
+        padding: 1em 2em;
+
+        .ds-panel__section-label {
+          display: block;
+          font-size: 28px;
+        }
+        .ds-panel__section-value {
+          display: block;
+          font-size: 72px;
+          font-weight: 600;
+          line-height: 100%;
+        }
+      }
+
+      &.has-multiple-child {
+        display: flex;
+        flex-direction: column;
+        padding-left: 2em;
+        border-left: 4px solid white;
+
+        .ds-panel__mini-section {
+          flex: 1;
+          padding-top: 14px;
+          padding-bottom: 14px;
+          &-label {
+            font-size: 24px;
+            line-height: 100%;
+            display: block;
+            margin-top: -5px;
+          }
+          &-value {
+            display: block;
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 125%;
+          }
+
+          &:first-child {
+            padding-top: 0;
+            border-bottom: 4px solid;
+          }
+          &:last-child {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &.full-height {
+    height: calc(100% - 10px);
+  }
+
+  &.full-inline {
+    padding: 20px 20px 20px 40px;
+    margin-bottom: 10px;
+    
+    .ds-panel__label {
+      &-text {
+        font-size: 1px;
+      }
+    }
+    
+    .ds-panel__value {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .bl-4-solid {
+      border-left: 4px solid ;
+    }
+  }
+
+  .sb-20 { margin-bottom: 20px }
+}
+
+.ds-progress {
+  margin-bottom: 2em;
+  &-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    color: #000000;
+    font-size: 18px;
+  }
+
+  &-bar {
+    position: relative;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #C4C4C4;
+    overflow: hidden;
+
+    &-inner {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      border-radius: 20px;
+      background-color: #DC6464;
+      transition: .25s all ease;
+    }
+
+    &.brown {
+      .ds-progress-bar-inner {
+        background-color: #8D7044;
+      }
+    }
+
+    &.pink {
+      .ds-progress-bar-inner {
+        background-color: #C364DA;
+      }
+    }
+  }
+}
+
+.loader,
+.failure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 50vh;
+
+  p {
+    margin: 10px 0 0;
+    font-size: 18px;
+  }
+}
+
+.failure {
+  p {
+    margin: 0 0 10px;
+    max-width: 75%;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 5px 10px;
+    color: #2739c1;
+    font-size: 16px;
+    border: none;
+  }
+}
+
+hr.new4 {
+  border: 10px solid black;
+}
+
+.animated {
+  animation: fadein .5s ease;
+
+  @keyframes fadein {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}

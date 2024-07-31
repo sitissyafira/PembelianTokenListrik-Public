@@ -1,0 +1,127 @@
+<ng-template [ngIf]="!loading && data" [ngIfElse]="onLoading">
+	<div style="height: 60vh !important">
+		<div class="col-sm-12 col-md-12 d-flex align-items-center">
+			<h1 class="title col-md-1">Ticket</h1>
+			<span class="line col-md-11"></span>
+		</div>
+		<div class="col-sm-12 row h-100 col-md-12">
+			<div class="col-sm-4 col-md-4 h-100 w-100 d-flex justify-content-center align-items-center">
+				<div class="background w-100 h-100 d-flex justify-content-center align-items-center">
+					<div class="h-100 d-flex align-items-center" style="flex-direction: column;">
+						<div style="height: 70%;" class="d-flex justify-content-center align-items-center">
+							<span style="font-size: 100px;font-weight: 800;">{{data?.ticket.total}}</span>
+						</div>
+						<div class="w-100 d-flex justify-content-center align-items-center" style="height: 20%;">
+							<span style="font-size: 16;font-weight: 800;">Waiting for Schedule</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="col-md-1"></div> -->
+			<div class="col-sm-8 col-md-8 row animated">
+				<div class="col-md-6">
+					<div
+						class="ds-panel full-height bg-orange m-2 justify-content-between row align-items-center d-flex"
+					>
+						<!-- <div class="row">
+						<div class="col-md-9 d-flex align-items-center">
+							<span class="ds-panel__label"
+								>Waiting for Schedule</span
+							>
+						</div>
+					</div> -->
+						<!-- <div class="offset-md-3 col-md-9"> -->
+						<span class="col-12"></span>
+						<span class="col-12 text-center text-lg">{{
+							data?.ticket.total
+						}}</span>
+						<span class="col-12 text-regular"
+							>Waiting For Scheduled</span
+						>
+						<!-- </div> -->
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div
+						class="ds-panel full-height bg-blue m-2 justify-content-between row align-items-center d-flex"
+					>
+						<!-- <div class="row">
+						<div class="col-md-9 d-flex align-items-center">
+							<span class="ds-panel__label"
+								>Waiting for Schedule</span
+							>
+						</div>
+					</div> -->
+						<!-- <div class="offset-md-3 col-md-9"> -->
+						<span class="col-12"></span>
+						<span class="col-12 text-center text-lg">{{
+							data?.ticket.total
+						}}</span>
+						<span class="col-12 text-regular"
+							>Waiting For Scheduled</span
+						>
+						<!-- </div> -->
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div
+						class="ds-panel full-height bg-red m-2 justify-content-between row align-items-center d-flex"
+					>
+						<!-- <div class="row">
+						<div class="col-md-9 d-flex align-items-center">
+							<span class="ds-panel__label"
+								>Waiting for Schedule</span
+							>
+						</div>
+					</div> -->
+						<!-- <div class="offset-md-3 col-md-9"> -->
+						<span class="col-12"></span>
+						<span class="col-12 text-center text-lg">{{
+							data?.ticket.total
+						}}</span>
+						<span class="col-12 text-regular"
+							>Waiting For Scheduled</span
+						>
+						<!-- </div> -->
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div
+						class="ds-panel full-height bg-green m-2 justify-content-between row align-items-center d-flex"
+					>
+						<!-- <div class="row">
+						<div class="col-md-9 d-flex align-items-center">
+							<span class="ds-panel__label"
+								>Waiting for Schedule</span
+							>
+						</div>
+					</div> -->
+						<!-- <div class="offset-md-3 col-md-9"> -->
+						<span class="col-12"></span>
+						<span class="col-12 text-center text-lg">{{
+							data?.ticket.total
+						}}</span>
+						<span class="col-12 text-regular"
+							>Waiting For Scheduled</span
+						>
+						<!-- </div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #onLoading>
+	<div *ngIf="loading; else hasError" class="col-md-12 loader animated">
+		<mat-spinner diameter="35"></mat-spinner>
+		<p>Loading Content</p>
+	</div>
+
+	<ng-template #hasError>
+		<div class="col-md-12 failure animated">
+			<p>Something went wrong, click the button below to try again.</p>
+			<button (click)="loadData()">Let's try again</button>
+		</div>
+	</ng-template>
+</ng-template>

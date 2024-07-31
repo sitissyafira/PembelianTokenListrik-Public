@@ -1,0 +1,221 @@
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/transaksi-topup']" (click)="loadData()" [hidden]="showSpinner"
+				class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<button href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="loadData()"
+				[hidden]="showSpinner" (click)="onSubmit(false)" [disabled]="!cekPembayaranBtn" mat-raised-button>
+				<span class="kt-hidden-mobile">Pembayaran</span>
+			</button>
+			<mat-spinner [diameter]="30" *ngIf="showSpinner"></mat-spinner>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<mat-tab-group [(selectedIndex)]="selectedTab">
+			<mat-tab>
+				<ng-template mat-tab-label>
+					Detail Transaksi
+				</ng-template>
+				<ng-template matTabContent>
+					<!--begin::Form-->
+					<div *ngIf="topup">
+						<form *ngIf="topupForm" [formGroup]="topupForm" class="kt-form kt-form--group-seperator-dashed">
+							<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+								(close)="onAlertClose($event)">
+								Oh snap! Change a few things up and try submitting again.
+							</kt-alert>
+							<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+								(close)="onAlertClose($event)">
+								Month Power / Water is different
+							</kt-alert>
+							<kt-alert *ngIf="hasError" type="warn" [showCloseButton]="true" [duration]="10000"
+								(close)="onAlertClose($event)">
+								{{message}}
+							</kt-alert>
+							<div class="kt-form__section kt-form__section--first">
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="ID Transaksi" formControlName="topup_number" />
+											<mat-error>ID Transaksi is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field>
+											<input matInput [matDatepicker]="tpdate" placeholder="Tanggal Transaksi"
+												formControlName="topup_date" (dateInput)="addEvent('input', $event)"
+												(dateChange)="addEvent('change', $event)" />
+											<mat-datepicker-toggle matSuffix [for]="tpdate"></mat-datepicker-toggle>
+											<mat-datepicker #tpdate></mat-datepicker>
+											<mat-error>Tanggal Transaksi is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input type="text" matInput placeholder="Select Unit"
+												[formControl]="viewBlockResult" [matAutocomplete]="csmrAuto"
+												(keyup)="_onKeyup($event)">
+											<mat-error>Fill input by selecting the given items</mat-error>
+											<div *ngIf="loadingData.unit" class="form-loader">
+												<mat-spinner [diameter]="10"></mat-spinner>
+											</div>
+											<mat-autocomplete #csmrAuto="matAutocomplete">
+												<mat-option *ngFor="let item of UnitResultFiltered"
+													value="{{item.cdunt}}" (click)="_setIdUnit(item)">
+													{{item.cdunt }}
+												</mat-option>
+											</mat-autocomplete>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Orderan" formControlName="orderan"
+												[disabled]="!orderanInput">
+												<mat-option *ngFor="let item of OrderanResultFiltered"
+													value="{{item._id}}" (click)="_setIdRate(item)">
+													{{item.name }}
+												</mat-option>
+											</mat-select>
+											<mat-error>Orderan is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<!-- tes end -->
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Harga" type="text"
+												formControlName="namePrabayar" />
+											<mat-error>Harga To is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile" formGroupName="adminRate">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Biaya Admin" formControlName="adminRate" />
+											<mat-error>Biaya Admin is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile" formGroupName="totalBiaya">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Total Biaya" formControlName="totalBiaya"
+												readonly />
+											<mat-error>Total Biaya is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- asasas -->
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-3 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Metode Pembayaran"
+												formControlName="mtdPembayaran" [disabled]="!mtdPembayaranInput">
+												<mat-option *ngFor="let item of MtdPembayaranResultFiltered"
+													value="{{item.name}}" (click)="_setMtdPembayaran(item)">
+													{{item.name == "manual" ? "Transfer Manual" : item.name == "online
+													payment" ? "Online Payment"
+													: item.name ==
+													"edc" ? "EDC" : item.name == "cash" ? "Cash" : item.name}}
+												</mat-option>
+											</mat-select>
+											<mat-error>Metode Pembayaran is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<!-- Mtd Pembayaran Manual START -->
+									<div class="col-lg-3 kt-margin-bottom-20-mobile" [ngClass]="manual ? '' : 'd-none'">
+										<mat-form-field class="mat-form-field-fluid">
+											<input type="text" matInput placeholder="Bank Transfer"
+												[formControl]="viewBankResult" [matAutocomplete]="bankAuto"
+												(keyup)="_onKeyupBank($event)">
+											<mat-error>Fill input by selecting the given items</mat-error>
+											<div *ngIf="loadingData.unit" class="form-loader">
+												<mat-spinner [diameter]="10"></mat-spinner>
+											</div>
+											<mat-autocomplete #bankAuto="matAutocomplete">
+												<mat-option *ngFor="let item of BankTransferResultFiltered"
+													value="{{item.bank}}" (click)="_setBankTransfer(item)">
+													{{item.bank }} - ({{item.codeBank}})
+												</mat-option>
+											</mat-autocomplete>
+										</mat-form-field>
+									</div>
+									<!-- tes -->
+									<!-- <div class="col-lg-3 kt-margin-bottom-20-mobile" [ngClass]="manual ? '' : 'd-none'">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Bank Transfer" formControlName="bankTransfer">
+												<mat-option *ngFor="let item of BankTransferResultFiltered" value="{{item.bank}}"
+													(click)="_setBlockValue(item)">
+													{{item.bank }} - ({{item.codeBank}})
+												</mat-option>
+											</mat-select>
+											<mat-error>Metode Pembayaran is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div> -->
+									<div class="col-lg-3 kt-margin-bottom-20-mobile"
+										[ngClass]="manual && account_no ? '' : 'd-none'">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Account No" formControlName="account_no"
+												type="number" />
+											<mat-error>Account No is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile"
+										[ngClass]="manual && account_name ? '' : 'd-none'">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Account Name" formControlName="account_name" />
+											<mat-error>Account Name is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<!-- Mtd Pembayaran Manual END -->
+									<!-- Mtd Pembayaran EDC START -->
+									<div class="col-lg-3 kt-margin-bottom-20-mobile" [ngClass]="edc ? '' : 'd-none'">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="No Kartu" formControlName="card_no" />
+											<mat-error>No Kartu is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-3 kt-margin-bottom-20-mobile" [ngClass]="edc ? '' : 'd-none'">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Atas Nama Kartu" formControlName="name_card" />
+											<mat-error>Atas Nama Kartu is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<!-- Mtd Pembayaran EDC END -->
+								</div>
+
+							</div>
+						</form>
+					</div>
+					<!--end::Form-->
+				</ng-template>
+			</mat-tab>
+		</mat-tab-group>
+	</kt-portlet-body>
+</kt-portlet>

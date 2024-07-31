@@ -1,0 +1,7 @@
+<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M84 12H36C32.8174 12 29.7652 13.2643 27.5147 15.5147C25.2643 17.7652 24 20.8174 24 24V120C24 123.183 25.2643 126.235 27.5147 128.485C29.7652 130.736 32.8174 132 36 132H108C111.183 132 114.235 130.736 116.485 128.485C118.736 126.235 120 123.183 120 120V48L84 12Z" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M84 12V48H120" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 78H48" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 102H48" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M60 54H54H48" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

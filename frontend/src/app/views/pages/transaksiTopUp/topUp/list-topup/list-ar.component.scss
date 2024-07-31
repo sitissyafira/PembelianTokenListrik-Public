@@ -1,0 +1,78 @@
+::ng-deep
+	.mat-sort-header-container:not(.mat-sort-header-sorted)
+	.mat-sort-header-arrow {
+	opacity: 0.54 !important;
+	transform: translateY(0px) !important;
+}
+
+.cmr-4 {
+	margin-right: 4em;
+}
+.divider {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+.chip {
+	display: inline-block;
+	padding: 5px 15px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: lowercase;
+	background-color: lightblue; 
+	border-radius: 25px;
+
+	&--danger {
+		color: #fff;
+		background-color: #fd397a;
+	}
+
+	&--success {
+		color: #fff;
+		background-color: #00b93a;
+	}
+
+	&--warning {
+		background-color: gold;
+	}
+}
+
+// table
+// .mat-column-print,
+// .mat-column-actions,
+// .mat-column-noUnit
+//  {
+// 	flex: 0 0 6%;
+// }
+// .mat-column-admin {
+// 	flex: 0 0 8%;
+
+// }
+// .mat-column-idTransaksi {
+// 	flex: 0 0 11%;
+// }
+// .mat-column-tglTransaksi {
+// 	flex: 0 0 10%;
+// }
+// .mat-column-metodePembayaran {
+// 	flex: 0 0 13%;
+// }
+// .mat-column-harga {
+// 	flex: 0 0 8%;
+// }
+// .mat-column-harga {
+// 	flex: 0 0 8%;
+// }
+// .mat-column-orderan {
+// 	flex: 0 0 11%;
+// }
+// .mat-column-progressTopUp ,
+// .mat-column-statusPayment {
+// 	flex: 0 0 10%;
+// }
+.mat-icon-button .mat-icon, .mat-icon-button i {
+	line-height: 24px;
+	text-align: center;
+	align-self: center;
+	display: flex;
+}

@@ -1,0 +1,37 @@
+.mark {
+    background: none !important;
+    font-size: 11px;
+
+    &__title {
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: 600
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &-color {
+            height: 15px;
+            width: 15px;
+            display: inline-block;
+            border-radius: px;
+            margin-right: 5px;
+            background-color: lightblue;
+
+            &--primary {
+                background-color:rgba(15, 18, 63, 1);
+            }
+            &--secondary {
+                background-color: rgba(69, 196, 176, 1) ;
+            }
+        }
+    }
+
+    &.mt-xs-2 {
+        @media screen and (max-width: 411px) {
+            margin-top: 2em;
+        }
+    }
+}

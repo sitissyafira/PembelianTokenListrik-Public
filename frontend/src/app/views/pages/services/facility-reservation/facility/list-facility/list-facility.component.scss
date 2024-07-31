@@ -1,0 +1,61 @@
+::ng-deep .mat-sort-header-container:not(.mat-sort-header-sorted) .mat-sort-header-arrow {
+    opacity: 0.54 !important;
+    transform: translateY(0px) !important;
+}
+
+.fntInput {
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+}
+
+
+.chip {
+    display: inline-block;
+    padding: 5px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: lowercase;
+    background-color: lightblue;
+    border-radius: 25px;
+    text-align: center;
+
+
+    &--danger {
+        color: #fff;
+        background-color: #fd397a;
+    }
+
+    &--wait-confirm {
+        background-color: #FBB75126;
+        color: #FBB751;
+    }
+
+    &--done-confirm {
+        background-color: #21E15726;
+        color: #21E157;
+    }
+
+    &--taken {
+        background-color: #7ae23426;
+        color: #7ae234;
+    }
+
+    &--done {
+        background-color: #3021E126;
+        color: #3021E1;
+    }
+
+    &--opened {
+        color: #5c5c5caa;
+        background-color: #d3d3d35e;
+    }
+
+    &--new {
+        color: #fff;
+        background-color: #b46c00;
+    }
+}
+
+.sty-default {
+    font-family: 'Poppins', sans-serif;
+}

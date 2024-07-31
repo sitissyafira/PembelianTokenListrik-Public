@@ -1,0 +1,103 @@
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/subdefect']" class="btn btn-secondary kt-margin-r-10" mat-raised-button >
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<button href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSubmit(false)" [disabled]="loading" mat-raised-button >
+				<span class="kt-hidden-mobile">Save</span>
+			</button>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<mat-tab-group [(selectedIndex)]="selectedTab">
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-user"></i>
+					Defect Info
+				</ng-template>
+				<ng-template matTabContent>
+					<!--begin::Form-->
+					<ng-template [ngIf]="!loadingForm" [ngIfElse]="onLoadingForm">
+					<div *ngIf="subdefect">
+						<form [formGroup]="subdefectForm" class="kt-form kt-form--group-seperator-dashed">
+							<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+								Oh snap! Change a few things up and try submitting again.
+							</kt-alert>
+							<div class="kt-form__section kt-form__section--first">
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Sub Detail Location Id" formControlName="subdefectid"/>
+											<mat-error>Sub Detail Location Id is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Location" formControlName="category" #cat (selectionChange)="categoryOnChange(cat.value)" >
+												<mat-option *ngFor="let item of categoryResult" [value]="item._id">
+													{{ item.name | titlecase }}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Detail Location" formControlName="defect">
+												<mat-option *ngFor="let item of defectResult" [value]="item._id">
+													{{ item.defect_name |titlecase }}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-6 kt-margin-bottom-20-mobile">
+									<mat-form-field class="mat-form-field-fluid">
+										<input matInput placeholder="Defect" formControlName="subtype"/>
+										<mat-error>Defect is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+									</div>
+									<div class="col-lg-6 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Priority" formControlName="priority">
+												<mat-option value="High">High</mat-option>
+												<mat-option value="Medium">Medium</mat-option>
+												<mat-option value="Low">Low</mat-option>
+											</mat-select>
+											<mat-error>Priority is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!--end::Form-->
+					</ng-template>
+				
+
+					<ng-template #onLoadingForm>
+						<div class="text-center pt-4 pb-4">
+							<div class="d-inline-block mx-auto">
+								<mat-spinner [diameter]="20"></mat-spinner>
+							</div>
+							<div>
+								<span>Loading Form</span>
+							</div>
+						</div>
+					</ng-template>
+
+				</ng-template>
+			</mat-tab>
+		</mat-tab-group>
+	</kt-portlet-body>
+</kt-portlet>
+

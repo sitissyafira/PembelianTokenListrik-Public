@@ -1,0 +1,80 @@
+div {
+    color: black;
+}
+
+.primary {
+    background-color: rgba(15, 18, 63, 1);
+}
+secondary {
+    background-color: rgba(69, 196, 176, 1);
+}
+
+.mark {
+    background: none !important;
+    font-size: 11px;
+
+    &__title {
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: 600
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &-color {
+            height: 15px;
+            width: 15px;
+            display: inline-block;
+            border-radius: px;
+            margin-right: 5px;
+            background-color: lightblue;
+
+            &--success {
+                background-color: #00b93a;
+            }
+
+            &--warning {
+                background-color: gold;
+            }
+
+            &--danger {
+                background-color: #fd397a;
+            }
+
+            &--primary {
+                background-color:rgba(15, 18, 63, 1);
+            }
+            &--secondary {
+                background-color: rgba(69, 196, 176, 1) ;
+            }
+
+            &--outstanding {
+                background-color: #5C5C5C;
+            }
+
+            &--full-payment {
+                background-color: #518BFB;
+            }
+
+            &--parsial-kurang {
+                background-color: #FBB751;
+            }
+
+            &--parsial-lebih {
+                background-color: #21E157;
+            }
+
+            &--paid {
+                background-color: #3021E1;
+            }
+        }
+    }
+
+    &.mt-xs-2 {
+        @media screen and (max-width: 411px) {
+            margin-top: 2em;
+        }
+    }
+}

@@ -1,0 +1,243 @@
+
+<ng-template [ngIf]="!loading && data" [ngIfElse]="onLoading">
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+    <h1 class="title col-md-2">Unit</h1>
+    <!-- <span class="line col-md-10"></span> -->
+  </div>
+
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-blue full-width">
+      <div class="row">
+        <div class="col-md-2 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/building.svg'"></span>
+        </div>
+  
+        <div class="col-md-5 ds-panel__section">
+          <span class="ds-panel__section-label">Total Unit</span>
+          <span class="ds-panel__section-value">{{ data?.unit.total }}</span>
+        </div>
+  
+        <div class="col-md-5 ds-panel__section has-multiple-child">
+          <div class="ds-panel__mini-section">
+            <span class="ds-panel__mini-section-value">{{ data?.unit.bast }}</span>
+            <span class="ds-panel__mini-section-label">BAST</span>
+          </div>
+          <div class="ds-panel__mini-section">
+            <span class="ds-panel__mini-section-value">{{ data?.unit.available }}</span>
+            <span class="ds-panel__mini-section-label">Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-green full-width">
+      <div class="row">
+        <div class="col-md-3 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money.svg'"></span>
+        </div>
+  
+        <div class="col-md-9 ds-panel__section">
+          <span class="ds-panel__section-label">Total IPL</span>
+          <span class="ds-panel__section-value">Rp. {{ data?.unit.total }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-6">
+        <div class="ds-panel bg-red full-width">
+          <div class="row">
+            <div class="col-md-3 ds-panel__icon">
+              <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money2.svg'"></span>
+            </div>
+      
+            <div class="col-md-9 ds-panel__section">
+              <span class="ds-panel__section-label"> Unpaid </span>
+              <span class="ds-panel__section-valueSecond">Rp. {{ data?.unit.total }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ds-panel bg-white full-width">
+        <div class="row">
+          <div class="col-md-3 ds-panel__icon">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money3.svg'"></span>
+          </div>
+    
+          <div class="col-md-9 ds-panel__section">
+            <span class="ds-panel__section-label" style="color: #81D07A;"> Paid </span>
+            <span class="ds-panel__section-valueSecond" style="color: #81D07A;">Rp. {{ data?.unit.total }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+    <h1 class="title col-md-3">Billing Power</h1>
+    <!-- <span class="line col-md-10"></span> -->
+  </div>
+
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-orange full-width">
+      <div class="row">
+        <div class="col-md-3 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/data.svg'"></span>
+        </div>
+  
+        <div class="col-md-9 ds-panel__section">
+          <span class="ds-panel__section-label">Total Billing Power</span>
+          <span class="ds-panel__section-value">Rp. {{ data?.unit.total }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-6">
+        <div class="ds-panel bg-red full-width">
+          <div class="row">
+            <div class="col-md-3 ds-panel__icon">
+              <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money2.svg'"></span>
+            </div>
+      
+            <div class="col-md-9 ds-panel__section">
+              <span class="ds-panel__section-label"> Unpaid </span>
+              <span class="ds-panel__section-valueSecond">Rp. {{ data?.unit.total }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ds-panel bg-white full-width">
+        <div class="row">
+          <div class="col-md-3 ds-panel__icon">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money3.svg'"></span>
+          </div>
+    
+          <div class="col-md-9 ds-panel__section">
+            <span class="ds-panel__section-label" style="color: #81D07A;"> Paid </span>
+            <span class="ds-panel__section-valueSecond" style="color: #81D07A;">Rp. {{ data?.unit.total }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-green full-width">
+      <div class="row">
+        <div class="col-md-3 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money.svg'"></span>
+        </div>
+  
+        <div class="col-md-9 ds-panel__section">
+          <span class="ds-panel__section-label">Total IPL</span>
+          <span class="ds-panel__section-value">Rp. {{ data?.unit.total }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-6">
+        <div class="ds-panel bg-red full-width">
+          <div class="row">
+            <div class="col-md-3 ds-panel__icon">
+              <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money2.svg'"></span>
+            </div>
+      
+            <div class="col-md-9 ds-panel__section">
+              <span class="ds-panel__section-label"> Unpaid </span>
+              <span class="ds-panel__section-valueSecond">Rp. {{ data?.unit.total }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ds-panel bg-white full-width">
+        <div class="row">
+          <div class="col-md-3 ds-panel__icon">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money3.svg'"></span>
+          </div>
+    
+          <div class="col-md-9 ds-panel__section">
+            <span class="ds-panel__section-label" style="color: #81D07A;"> Paid </span>
+            <span class="ds-panel__section-valueSecond" style="color: #81D07A;">Rp. {{ data?.unit.total }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+    <h1 class="title col-md-3">Billing Power</h1>
+    <!-- <span class="line col-md-10"></span> -->
+  </div>
+
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-orange full-width">
+      <div class="row">
+        <div class="col-md-3 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/data.svg'"></span>
+        </div>
+  
+        <div class="col-md-9 ds-panel__section">
+          <span class="ds-panel__section-label">Total Billing Power</span>
+          <span class="ds-panel__section-value">Rp. {{ data?.unit.total }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-6">
+        <div class="ds-panel bg-red full-width">
+          <div class="row">
+            <div class="col-md-3 ds-panel__icon">
+              <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money2.svg'"></span>
+            </div>
+      
+            <div class="col-md-9 ds-panel__section">
+              <span class="ds-panel__section-label"> Unpaid </span>
+              <span class="ds-panel__section-valueSecond">Rp. {{ data?.unit.total }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ds-panel bg-white full-width">
+        <div class="row">
+          <div class="col-md-3 ds-panel__icon">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money3.svg'"></span>
+          </div>
+    
+          <div class="col-md-9 ds-panel__section">
+            <span class="ds-panel__section-label" style="color: #81D07A;"> Paid </span>
+            <span class="ds-panel__section-valueSecond" style="color: #81D07A;">Rp. {{ data?.unit.total }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</ng-template>
+
+<ng-template #onLoading>
+  <div *ngIf="loading; else hasError" class="col-md-12 loader animated">
+    <mat-spinner diameter="35"></mat-spinner>
+    <p>Loading Content</p>
+  </div>
+
+  <ng-template #hasError>
+    <div class="col-md-12 failure animated">
+      <p>Something went wrong, click the button below to try again.</p>
+      <button (click)="loadData()">
+        Let's try again
+      </button>
+    </div>
+  </ng-template>
+</ng-template>

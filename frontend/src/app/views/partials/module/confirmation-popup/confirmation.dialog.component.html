@@ -1,0 +1,28 @@
+<div
+  class="p-3 align-items-center"
+>
+  
+            <h4 mat-dialog-title class="row text-center">{{ title}} </h4>
+            <div mat-dialog-content>{{ subTitle }}</div>
+            <div mat-dialog-actions class="d-flex justify-content-between">
+              <button type="button" 
+                mat-raised-button 
+                [mat-dialog-close]="false" 
+                cdkFocusInitial  
+                matTooltip="Close"
+                color="warn"
+                class="px-2">
+                No
+              </button>
+              <button type="button" 
+                  mat-raised-button 
+                  [mat-dialog-close]="true" 
+                  cdkFocusInitial  
+                  matTooltip="Close" 
+                  color="primary"
+                  class="px-2">
+                    Yes
+              </button>
+            </div>
+   
+</div>

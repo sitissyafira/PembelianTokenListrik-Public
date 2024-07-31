@@ -1,0 +1,277 @@
+<!-- Section One -->
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/master-facility-reservation']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Kembali</span>
+			</a>
+			<button href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSubmit(false)"
+				[disabled]="loading" mat-raised-button>
+				<span>Simpan</span>
+			</button>
+		</ng-container>
+	</kt-portlet-header>
+
+	<!-- Pop Up remove Master (start) -->
+	<div class="example-preview">
+		<div>
+			<ng-template #content6 let-c="close" let-d="dismiss">
+				<div class="modal-body">
+					<form class="kt-form kt-form--label-right dropzone">
+						<div class="kt-portlet__body txtremove-facility">
+							<div>Hapus fasilitas <span>{{dataRemove._id ? (dataRemove.name | titlecase) : ""}}</span> ?</div>
+							<p class="text-danger">Menghapus fasilitas akan mempengaruhi data master fasilitas yang sudah dibuat,
+								pastikan jika ingin benar-benar menghapus!</p>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mr-3" (click)="clickNo()">Tutup</button>
+					<button href="javascript:;" class="btn btn-primary " color="warn" (click)="deleteMasterOption(dataRemove._id)"
+						mat-raised-button>
+						<span> Hapus </span>
+					</button>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+	<!-- Pop Up remove Master (end) -->
+	<!-- Pop Up Validation Save (start) -->
+	<div class="example-preview">
+		<div>
+			<ng-template #contentSave let-c="close" let-d="dismiss">
+				<div class="modal-body">
+					<form class="kt-form kt-form--label-right dropzone">
+						<div class="kt-portlet__body txtremove-facility">
+							<div>Tambah Fasilitas <span>{{dataAdded._id ? (dataAdded.name | titlecase) : ""}}</span> ?</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mr-3" (click)="clickNo()">Tutup</button>
+					<button href="javascript:;" class="btn btn-primary " color="primary" (click)="addBtnMaster(dataAdded._id)"
+						mat-raised-button>
+						<span> Tambah </span>
+					</button>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+	<!-- Pop Up Validation Save (end) -->
+
+	<kt-portlet-body>
+		<section class="facilityReservation">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="masterForm" class="kt-form kt-form--group-seperator-dashed">
+					<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+						(close)="onAlertClose($event)">
+						Oh snap! Change a few things up and try submitting again.
+					</kt-alert>
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+							<div class="row form-input" [hidden]="isAddMaster">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Pilih Fasilitas</label>
+									<!-- Auto Complete -->
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="text" class="inpt-custom" matInput [matAutocomplete]="masterAuto"
+											[formControl]="facilityForm" (keyup)="_onKeyupMaster($event)">
+										<mat-error>Fill input by selecting the given items</mat-error>
+										<div class="form-loader d-none">
+											<mat-spinner [diameter]="10"></mat-spinner>
+										</div>
+										<mat-autocomplete #masterAuto="matAutocomplete">
+											<mat-option class="el-choose-facility" *ngFor="let item of masterResultFiltered ; let i = index"
+												[ngClass]="i % 2 === 1 ? 'bg-even' : 'bg-odd'" [value]="item.name | titlecase"
+												(click)="masterOnChange(item._id)">
+												<span class="d-flex justify-content-between align-items-center">{{item.name}} <span
+														class="el-btn-del" (click)="openPopup(content6, item._id)">hapus</span></span>
+											</mat-option>
+											<mat-option (click)="clickAddMaster()">
+												<div class="el-choose-add-facility d-flex align-items-center">
+													<span class="btn-add-round d-flex align-items-center justify-content-center mr-2">+</span>
+													Tambah
+													Fasilitas Baru
+												</div>
+											</mat-option>
+										</mat-autocomplete>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input" [hidden]="!isAddMaster">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Masukkan Fasilitas Baru</label>
+									<div class="col-sm-6">
+										<mat-form-field class="mat-form-field-fluid">
+											<input type="search" matInput class="inpt-custom" autocomplete="off" formControlName="addMaster"
+												(input)="changeNewMaster($event)" />
+											<mat-error>Masukkan Fasilitas Baru is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+										<div class="d-flex justify-content-between">
+											<div></div>
+											<div class="d-flex">
+												<div class="btn-cancel mr-2" (click)="cancelAddMaster()">Batal</div>
+												<div [ngClass]="isActivebBtnSave ? 'btn-save' : 'btn-save-disable'"
+													(click)="isActivebBtnSave ? openPopupSave(contentSave) : ''">
+													Simpan</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Pilih Hari Reservasi</label>
+									<mat-form-field class="inpt-custom mat-form-field-fluid col-sm-6" readonly>
+										<mat-select class="inpt-custom" formControlName="scheduleDay">
+											<mat-option class="sty-default" *ngFor="let item of days" [value]="item.name">{{item.name |
+												titlecase}}</mat-option>
+										</mat-select>
+										<mat-error>Pilih Hari Reservasi is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row  mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Maksimal Orang per Order</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="search" oninput="this.value = 
+										!!this.value && Math.abs(this.value) >= 1 ? Math.abs(this.value) : null" matInput class="inpt-custom"
+											formControlName="maxPeople" autocomplete="off" />
+										<mat-error>Maksimal Orang per Order is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+
+							</div>
+
+							<div class="row form-input">
+								<div class="col-md-6 row  mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Jam Sebelum Waktu Mulai</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="number" oninput="this.value = 
+										!!this.value && Math.abs(this.value) >= 1 ? Math.abs(this.value) : null" matInput class="inpt-custom"
+											formControlName="hourBeforeStartTime" autocomplete="off" />
+										<mat-error>Jam Sebelum Waktu Mulai is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Status Fasilitas</label>
+									<mat-form-field class="inpt-custom mat-form-field-fluid col-sm-6" readonly>
+										<mat-select class="inpt-custom" formControlName="isActive">
+											<mat-option class="sty-default" *ngFor="let item of isActiveArr" [value]="item.value">
+												{{item.name|titlecase}}</mat-option>
+										</mat-select>
+										<mat-error>Status Fasilitas is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Section Two -->
+<kt-portlet>
+	<kt-portlet-header [title]="'Detail Waktu Reservasi'" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<section class="facilityReservation">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="masterForm" class="kt-form kt-form--group-seperator-dashed">
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+							<!-- Multi Time START-->
+							<div class="kt-form">
+								<div class="mat-table__wrapper">
+
+									<mat-table class="lmat-elevation-z8" mat-table #myTable [dataSource]="timeList" matSort
+										#sort1="matSort" matSortDirection="asc" matSortDisabledClear>
+
+
+										<ng-container matColumnDef="no">
+											<mat-cell *matCellDef="let cc; let id = index"><span class="sty-default no-time">Waktu {{id +
+													1}}</span>
+											</mat-cell>
+										</ng-container>
+
+										<ng-container matColumnDef="start">
+											<mat-cell *matCellDef="let cc; let id = index">
+												<div class="hr-example-cstm sty-default">
+													<input placeholder="Waktu Mulai" aria-label="Waktu Mulai" [ngxTimepicker]="startTime"
+														[format]="24" readonly>
+													<ngx-material-timepicker (timeSet)="changeValue(id, 'startTime', $event)" #startTime>
+													</ngx-material-timepicker>
+												</div>
+											</mat-cell>
+										</ng-container>
+										<ng-container matColumnDef="end">
+											<mat-cell *matCellDef="let cc; let id = index">
+												<div class="hr-example-cstm sty-default">
+													<input placeholder="Waktu Akhir" aria-label="Waktu Akhir" [ngxTimepicker]="endTime"
+														[format]="24" readonly>
+													<ngx-material-timepicker (timeSet)="changeValue(id, 'endTime', $event)" #endTime>
+													</ngx-material-timepicker>
+												</div>
+											</mat-cell>
+										</ng-container>
+										<ng-container matColumnDef="quota">
+											<mat-cell *matCellDef="let cc; let id = index">
+												<div class="col-md-12 kt-margin-bottom-20-mobile">
+													<mat-form-field class="mat-form-field-fluid col-sm-6 sty-default">
+														<input type="number" placeholder="Kuota" oninput="this.value = 
+														!!this.value && Math.abs(this.value) >= 1 ? Math.abs(this.value) : null" matInput class="inpt-custom"
+															(input)="changeValue(id, 'quota', $event)" autocomplete="off" />
+													</mat-form-field>
+												</div>
+											</mat-cell>
+										</ng-container>
+
+										<ng-container matColumnDef="action">
+											<mat-header-cell *matHeaderCellDef>actions</mat-header-cell>
+											<mat-cell *matCellDef="let cc; let id = index">
+												<button mat-icon-button color="primary" matTooltip="Add Field" type="button"
+													[disabled]="timeList.length !== (id + 1)" (click)="addTime(id)">
+													<mat-icon>add</mat-icon>
+												</button>
+												<button mat-icon-button color="warn" matTooltip="Delete Field" type="button"
+													[disabled]="id === 0 || timeList.length !== (id + 1)" (click)="removeTime(id)">
+													<mat-icon>delete</mat-icon>
+												</button>
+											</mat-cell>
+										</ng-container>
+
+										<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+									</mat-table>
+								</div>
+							</div>
+							<!-- Multi Time END -->
+
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>

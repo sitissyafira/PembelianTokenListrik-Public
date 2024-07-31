@@ -1,0 +1,44 @@
+:host {
+	::ng-deep {
+		ngb-tabset > .nav-tabs {
+			display: none;
+		}
+	}
+}
+
+.pointer { cursor: pointer !important }
+.notification-group {
+	.kt-notification__item {
+		padding-left: 3em;
+	}
+	.kt-notification__item-icon {
+		i {
+			transform: rotate(180deg);
+		}
+	}
+}
+.rotating-arrow {
+	&.active::after {
+		transform: rotate(90deg);
+	}
+}
+
+.position-relative {
+	.badge.badge-danger {
+		position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50px;
+    font-size: 75%;
+    padding: 0.45em .6em;
+	}
+}
+	
+.no-notification {
+	height: 100%;
+	justify-content: center;
+}
+
+.text-bold {
+	font-weight: 600;
+}

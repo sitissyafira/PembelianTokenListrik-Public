@@ -1,0 +1,42 @@
+<div class="modalrejectpayment">
+	<div>
+		<div class="modal-body process-reject">
+			<div class="kt-portlet__body">
+				<div class="processing">
+					<div>
+						<div class="d-flex align-items-center flex-column">
+							<h3 class=" mt-5">Reject Payment</h3>
+							<div class="d-flex p-2 mb-5 warn-alert">
+								<mat-icon>warning</mat-icon>
+								<p class="m-0 p-0">Are you sure you want to reject payment for account payment status to be unpaid</p>
+							</div>
+							<form [formGroup]="billrejectForm" class="kt-form kt-form--group-seperator-dashed" style="width: 100%;">
+								<div class="reject-reason d-flex flex-column">
+									<label class="p-0">Description</label>
+									<mat-form-field class="p-0 mat-form-field-fluid">
+										<textarea matInput class="inpt-custom txt-area-custom" formControlName="reasonReject"
+											autocomplete="off" rows="4">
+                </textarea>
+										<mat-error>Description is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</form>
+							<div mat-dialog-actions class="d-flex justify-content-between">
+								<button type="button" mat-raised-button [mat-dialog-close]="false" cdkFocusInitial matTooltip="Close"
+									class="px-2">
+									Close
+								</button>
+								<button type="button" mat-raised-button cdkFocusInitial matTooltip="Reject" color="warn" class="px-2"
+									(click)="onReject()">
+									Reject
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,59 @@
+<!-- ====================== Pop Up Process Generate ====================== -->
+<div class="modalprocessgenerate">
+  <div>
+    <div class="modal-body process-generate">
+      <!-- ========================== Condition Process ========================== -->
+      <div class="kt-portlet__body">
+        <div class="processing">
+          <div [hidden]="isGenerateBilling !== ''">
+            <div class="d-flex align-items-center flex-column">
+              <h3 class=" mt-5">PROCESS... </h3>
+              <div class="d-flex p-2 mb-5 warn-alert">
+                <mat-icon>warning</mat-icon>
+                <p class="m-0 p-0">don't exit the page or open a new page in the browser tab!!</p>
+              </div>
+              <mat-spinner></mat-spinner>
+              <p class="mt-2 load-process">Please wait, until the process is
+                complete...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ========================== Condition Success ========================== -->
+      <div class="kt-portlet__body">
+        <div class="success-generate">
+          <div [hidden]="isGenerateBilling !== 'success'">
+            <div class="d-flex   align-items-center flex-column">
+              <h3 class="mb-3 mt-5 mb-5">Saving and payment is successful! </h3>
+              <img src="../../../../../assets/media/pos/checked.png" alt="checked" width="100">
+              <div class="success-alert p-2 mt-4 d-flex mb-3">
+                <mat-icon>info</mat-icon>
+                <p class="m-0 p-0">the generate process is successful, please check the journal that has been
+                  entered into the list.</p>
+              </div>
+              <button (click)="closePopUp()" mat-raised-button color="primary" class="ml-2">Back to journal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ========================== Condition Failed ========================== -->
+      <div class="kt-portlet__body">
+        <div class="failed-generate">
+          <div [hidden]="isGenerateBilling !== 'failed'">
+            <div class="d-flex   align-items-center flex-column">
+              <h3 class="mb-3 mt-5 mb-5">
+                <mat-icon>warning</mat-icon> Failed! Saving Journal
+              </h3>
+              <kt-alert type="warn">
+                {{msgErrorGenerate ? msgErrorGenerate :
+                'generate journal failed'}}
+              </kt-alert>
+              <p>Note : save journal failed</p>
+              <button (click)="closePopUp()" mat-raised-button color="primary" class="ml-2">Back to journal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

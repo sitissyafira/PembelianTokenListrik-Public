@@ -1,0 +1,181 @@
+<kt-portlet>
+	<kt-portlet-header [title]="'Package List'" [class]="'kt-portlet__head--lg'" [viewLoading$]="dataSource.loading$">
+		<ng-container ktPortletTools>
+			<button mat-raised-button class="mr-2" (click)="refresh()">Refresh
+				<mat-icon class="ic-refresh">
+					refresh
+				</mat-icon>
+			</button>
+		</ng-container>
+		<!-- <ng-container ktPortletTools>
+			<button [routerLink]="['add']" mat-raised-button color="primary" [hidden]="role === 'manager'">Tambahkan</button>
+		</ng-container>
+		<ng-container ktPortletTools>
+			<button (click)="export()" mat-raised-button color="primary" class="ml-2">Ekspor</button>
+		</ng-container> -->
+	</kt-portlet-header>
+
+
+
+	<kt-portlet-body>
+		<!-- New FLOW Start -->
+		<div class="kt-form kt-margin-b-30" style="margin-top: 30px;">
+			<div class="kt-form__filtration">
+				<div class="row align-items-center">
+					<div class="col-md-3 kt-margin-bottom-20-mobile">
+						<mat-form-field class="fntInput">
+							<mat-select class="sty-default" placeholder="Select Filter Search"
+								[formControl]="filterBy.control">
+								<mat-option *ngFor="let list of filterCategory" [value]="list.name"
+									(click)="valueChooseCategory(list.value)">{{
+									list.name }}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-bottom-10-mobile fntInput">
+						<mat-form-field class="mat-form-field-fluid fntInput">
+							<input matInput placeholder="{{placeHolderSearch}}" #searchInput placeholder="Search"
+								[disabled]="!isSearch">
+							<mat-hint align="start">
+								<strong>Search</strong> By {{placeHolderSearch}}
+							</mat-hint>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-bottom-10-mobile fntInput">
+						<mat-form-field class="fntInput">
+							<input matInput [formControl]="date.start.control" [matDatepicker]="startDate"
+								placeholder="Select Check In From" (focus)="startDate.open()"
+								(dateChange)="addDate('start', $event)" readonly #startDate />
+							<mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+							<mat-datepicker #startDate></mat-datepicker>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-bottom-10-mobile fntInput">
+						<mat-form-field class="fntInput">
+							<input matInput [formControl]="date.end.control" [matDatepicker]="endDate"
+								placeholder="Select Check In To" (focus)="endDate.open()"
+								(dateChange)="addDate('end', $event)" readonly #endDate />
+							<mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+							<mat-datepicker #endDate></mat-datepicker>
+						</mat-form-field>
+					</div>
+					<!-- <div class="col-md-2 kt-margin-bottom-20-mobile">
+						<mat-form-field class="fntInput">
+							<mat-select class="sty-default " placeholder="Paket Status" [formControl]="filterByStatus.control">
+								<mat-option *ngFor="let list of filterStatusDelivery" [value]="list.name"
+									(click)="valueChooseStatus(list.value)">{{
+									list.name }}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div> -->
+					<!-- Clear Filter -->
+					<div *ngIf="isClearFilter" class="col-md-12 mt-4">
+						<button mat-raised-button color="warn" (click)="clearAllFilter()">
+							Hapus Semua Filter
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort #sort1="matSort"
+				matSortActive="id" matSortDirection="asc" matSortDisableClear>
+
+				<ng-container matColumnDef="isRead">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Read</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">
+						<span class="chip" [ngClass]="packages?.isRead ? 'chip--opened' : 'chip--new'">
+							{{ packages?.isRead ? 'Read' : 'New'}}
+						</span>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="pacID">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>ID Paket</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">{{packages?.packageId | uppercase}}
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="cdunt">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Unit No.</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">{{packages?.cdunt | uppercase}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="contract_name">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Customer's Name</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">{{packages?.contract_name | titlecase}}
+					</mat-cell>
+				</ng-container>
+
+
+
+				<ng-container matColumnDef="entry">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Date of Entry</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">{{ packages?.created_date | date :
+						"d/MMM/y" }}
+					</mat-cell>
+				</ng-container>
+
+
+				<ng-container matColumnDef="status">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Status</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">
+						<span class="chip"
+							[ngClass]="packages?.package_status === 'wait-confirm' ? 'chip--wait-confirm' : packages?.package_status === 'done-confirm' ? 'chip--done-confirm ': packages?.package_status === 'done' ? 'chip--done' : 'chip--danger' ">
+							{{modulePackage.changeStatus(packages?.package_status ) }} </span>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="confirmed_date">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Confirmation Date</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">{{packages?.confirmed_date ?
+						(packages?.confirmed_date | date :
+						"d/MMM/y") : " - " }}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="created_date">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Date of Receipt</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">{{packages?.receiveDetail ?
+						(packages?.receiveDetail?.receive_date |
+						date:"d/MMM/y") : " - "}}</mat-cell>
+				</ng-container>
+
+
+
+				<ng-container matColumnDef="actions">
+					<mat-header-cell class="sty-default" *matHeaderCellDef>Action</mat-header-cell>
+					<mat-cell class="sty-default" *matCellDef="let packages">
+						<button (click)="editPackages(packages._id)" mat-icon-button color="primary" matTooltip="Edit"
+							[hidden]="role ==='manager'"
+							[disabled]="packages.package_status === 'out' || packages.package_status === 'confirmed' || packages.package_status === 'confirmed by system'|| packages.package_status === 'done'">
+							<mat-icon>exit_to_app</mat-icon>
+						</button>&nbsp;
+						<button (click)="viewPackages(packages._id)" mat-icon-button color="primary" matTooltip="View">
+							<mat-icon>visibility</mat-icon>
+						</button>&nbsp;
+						<button mat-icon-button color="warn" matTooltip="Delete" type="button"
+							(click)="deletePackages(packages)"
+							[hidden]="role === 'manager'|| role === 'admin-tro' || role === 'customer-service'">
+							<mat-icon>delete</mat-icon>
+						</button>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+			<div class="mat-table__message" *ngIf="!dataSource.hasItems">No records found</div>
+			<!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">Please wait....</div>
+		</div>
+
+
+		<div class="mat-table__bottom">
+			<!-- <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner> -->
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 50,100,500,1000,2000]"
+				[length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+		</div>
+
+	</kt-portlet-body>
+</kt-portlet>

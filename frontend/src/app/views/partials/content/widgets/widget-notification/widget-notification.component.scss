@@ -1,0 +1,34 @@
+.notif {
+  background-color: #F9F9F9;
+  color: #23262F;
+
+  &.header {
+    font-family: 'Manrope';
+    font-size: 18px;
+    background-color: #ffffff;
+  }
+
+  &.title {
+    font-size: 10px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+  }
+
+  &.date {
+    color: #708099;
+    font-size: 9px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+  }
+
+  &.count {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+  }
+}
+
+.card {
+  border-radius: 10px;
+}

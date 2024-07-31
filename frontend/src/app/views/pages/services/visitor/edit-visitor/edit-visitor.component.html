@@ -1,0 +1,601 @@
+<!-- Loading Form... -->
+<kt-portlet *ngIf="!visitor">
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/visitor']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<section class="visitorManagement">
+			<div class="d-flex justify-content-center">
+				<p>Loading Form...</p>
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Portlet One -->
+<kt-portlet *ngIf="visitorForm">
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/visitor']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<!-- <button [hidden]="visitor?.statusVisitor !== 'wait-confirm-web'" href="javascript:;"
+				class="btn btn-primary kt-margin-r-10" color="warn"
+				(click)="onSubmit(false, visitor?.statusVisitor, 'btnCancel')" [disabled]="loading" mat-raised-button>
+				<span class="kt-hidden-mobile"> Cancel </span>
+			</button> -->
+			<button [hidden]="visitor?.statusVisitor !== 'wait-confirm-web'" href="javascript:;"
+				class="btn btn-primary kt-margin-r-10" color="warn" (click)="openLarge(content6)" [disabled]="loading"
+				mat-raised-button>
+				<span> Cancel </span>
+			</button>
+			<button [hidden]="visitor?.statusVisitor === 'wait-confirm-mob'" href="javascript:;"
+				class="btn btn-primary kt-margin-r-10" color="primary"
+				(click)="onSubmit(false, visitor?.statusVisitor, 'btnSubmit')" [disabled]="loading" mat-raised-button>
+				<span>
+					{{
+					visitor?.statusVisitor === 'approve-by-mob' ? "Confirm" :
+					visitor?.statusVisitor === 'check-in' ? "Check Out":
+					visitor?.statusVisitor === 'wait-confirm-web' ? 'Approve' :
+					visitor?.statusVisitor === 'approve-by-web' ? 'Check In' : "Save"
+					}}
+				</span>
+			</button>
+		</ng-container>
+	</kt-portlet-header>
+
+	<div class="example-preview">
+		<div>
+			<ng-template #content6 let-c="close" let-d="dismiss">
+				<div class="modal-body">
+					<form class="kt-form kt-form--label-right dropzone">
+						<div class="kt-portlet__body">
+							<h4>are you sure want to cancel ?</h4>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mr-3" (click)="clickNo()">Close</button>
+					<button href="javascript:;" class="btn btn-primary " color="warn"
+						(click)="onSubmit(false, visitor?.statusVisitor, 'btnCancel');" mat-raised-button>
+						<span> Cancel </span>
+					</button>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+
+	<kt-portlet-body>
+		<section class="visitorManagement">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="visitorForm" class="kt-form kt-form--group-seperator-dashed">
+					<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+						(close)="onAlertClose($event)">
+						Oh snap! Change a few things up and try submitting again.
+					</kt-alert>
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Visitor Status</label>
+									<span class="chip" [ngClass]="_getStatusClass(
+										visitor?.statusVisitor
+									)">
+										{{moduleVisitor.changeStatus(visitor?.statusVisitor)}}
+									</span>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Select Unit</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="unitName" autocomplete="off" readonly />
+										<mat-error>Select Unit is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Tenant Name</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="customerName" autocomplete="off" readonly />
+										<mat-error>Tenant Name is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input-date">
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Visit Date </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="tanggal" readonly />
+										<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Visit Date is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Visiting Time </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="jam" readonly />
+										<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Visiting Time is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Portlet Two -->
+<kt-portlet *ngIf="visitorForm && visitor?.statusVisitor !== 'wait-confirm-web'">
+	<kt-portlet-header [title]="'Check In'" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<section class="visitorManagement">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="visitorForm" class="kt-form kt-form--group-seperator-dashed">
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+							<!-- Kondisi Jika data berasal dari mobile dengan status (approve-by-web) #START -->
+							<div class="row form-input-date" [hidden]="visitor?.statusVisitor !== 'approve-by-web'">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Check In Date </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" [matDatepicker]="checkInDate" (click)="checkInDate.open()"
+											(dateChange)="checkinDatePicker($event)" autocomplete="off"
+											[formControl]="checkinDateForm.checkIn" />
+										<mat-datepicker-toggle class="ic-date" matSuffix [for]="checkInDate"></mat-datepicker-toggle>
+										<mat-datepicker #checkInDate></mat-datepicker>
+										<mat-error>Check In Date is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Check In Time </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="checkIn_jam" readonly />
+										<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Check In Time is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<!-- Kondisi Jika data berasal dari mobile dengan status (approve-by-web) #END -->
+
+							<!-- START status selain approve-by-web -->
+							<div class="row form-input-date" [hidden]="visitor?.statusVisitor === 'approve-by-web'">
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Check In Date </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="checkIn" readonly />
+										<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Check In Date is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Check In Time </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="checkIn_jam" readonly />
+										<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Check In Time is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<!-- END -->
+
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Portlet If Check Out -->
+<kt-portlet *ngIf="visitor?.statusVisitor === 'check-in'">
+	<kt-portlet-header [title]="'Check Out'" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<section class="visitorManagement">
+			<div class="section">
+				<!-- Form Input START -->
+				<form class="kt-form kt-form--group-seperator-dashed">
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+							<div class="row form-input-date">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Check Out Date </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" [matDatepicker]="checkOutDate" (click)="checkOutDate.open()"
+											(dateChange)="checkOutDatePicker($event)" autocomplete="off"
+											[formControl]="formCheckOut.checkOut" />
+										<mat-datepicker-toggle class="ic-date" matSuffix [for]="checkOutDate"></mat-datepicker-toggle>
+										<mat-datepicker #checkOutDate></mat-datepicker>
+										<mat-error>Check Out Date is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Check Out Time </label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" [formControl]="formCheckOut.checkOut_jam" readonly />
+										<mat-datepicker-toggle class="ic-date" matSuffix></mat-datepicker-toggle>
+										<mat-error>Check Out Time is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Portlet Three -->
+<kt-portlet *ngIf="visitorForm">
+	<kt-portlet-header [title]="'Informasi Tamu'" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+	</kt-portlet-header>
+	<kt-portlet-body>
+
+		<mat-tab-group [(selectedIndex)]="selectedTab">
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-user"></i>
+					<p class="sty-default m-0 p-0"> Info Paket </p>
+				</ng-template>
+				<section class="visitorManagement" style="overflow:hidden">
+					<div class="section">
+						<!-- Form Input START -->
+						<form [formGroup]="visitorForm" class="kt-form kt-form--group-seperator-dashed">
+							<div class="kt-form__section kt-form__section--first">
+								<div class="form-group">
+									<div class="row form-input">
+										<div class="col-md-6 row mb-3">
+											<label for="crdate" class="label-custom col-sm-6">Visitor ID</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="guestId" autocomplete="off" />
+												<mat-error>Visitor ID is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+
+										<div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Visitor Name</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="nama" autocomplete="off" readonly />
+												<mat-error>Visitor Name is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+									<div class="row form-input">
+										<div class="col-md-6 row mb-3">
+											<label for="crdate" class="label-custom col-sm-6">Select Gender</label>
+											<mat-form-field class="inpt-custom mat-form-field-fluid col-sm-6" readonly>
+												<mat-select class="inpt-custom" formControlName="jenisKelamin">
+													<mat-option value="M">Laki - Laki</mat-option>
+													<mat-option value="F">Perempuan</mat-option>
+												</mat-select>
+												<mat-error>Select Gender is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+
+										<div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Phone Number</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput onkeyup="this.value=this.value.replace(/[^\d]/,'')" class="inpt-custom" readonly
+													autocomplete="off" formControlName="noTelp" />
+												<mat-error>Phone Number is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+
+										<!-- <div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Company / Instutition</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="company" autocomplete="off" />
+												<mat-error>Company / Instutition is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div> -->
+									</div>
+									<!-- <div class="row form-input"> -->
+									<!-- <div class="col-md-6 row mb-3">
+											<label for="crdate" class="label-custom col-sm-6">City</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="address" autocomplete="off" />
+												<mat-error>City is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div> -->
+
+									<!-- Jika Status  (approve-by-web) #START -->
+
+									<!-- <div class="col-md-6 row" [hidden]="visitor?.statusVisitor !== 'approve-by-web'">
+											<label for="crdate" class="label-custom col-sm-6">Province</label> -->
+									<!-- Auto Complete -->
+									<!-- <mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input type="text" class="inpt-custom" matInput [matAutocomplete]="cityAuto"
+													(keyup)="searchCity($event)">
+												<mat-error>Fill input by selecting the given items</mat-error>
+												<div class="form-loader d-none">
+													<mat-spinner [diameter]="10"></mat-spinner>
+												</div>
+												<mat-autocomplete #cityAuto="matAutocomplete">
+													<mat-option *ngFor="let item of cityResult" [value]="item.name | uppercase"
+														(click)="cityOnChange(item._id)">
+														{{item.name | uppercase }}
+													</mat-option>
+												</mat-autocomplete>
+											</mat-form-field> -->
+									<!-- </div> -->
+									<!-- Jika Status  (approve-by-web) #END -->
+
+
+									<!-- Status bukan (approve-by-web) #START -->
+									<!-- <div class="col-md-6 row" [hidden]="visitor?.statusVisitor === 'approve-by-web'">
+											<label for="crdate" class="label-custom col-sm-6">Province</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="city" autocomplete="off" readonly />
+												<mat-error>Province is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div> -->
+									<!-- Status bukan (approve-by-web) #END -->
+									<!-- </div> -->
+									<div class="row form-input">
+										<div class="col-md-6 row  mb-3">
+											<label for="crdate" class="label-custom col-sm-6">Number of Visitors</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input type="number" oninput="this.value = 
+												!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" matInput class="inpt-custom"
+													formControlName="guestQty" readonly autocomplete="off" />
+												<mat-error>Number of Visitors is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+
+										<div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Description</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="keperluan" autocomplete="off" readonly />
+												<mat-error>Description is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+
+										<!-- <div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Phone Number</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput onkeyup="this.value=this.value.replace(/[^\d]/,'')" class="inpt-custom" readonly
+													autocomplete="off" formControlName="noTelp" />
+												<mat-error>Phone Number is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div> -->
+									</div>
+
+									<!-- <div class="row form-input"> -->
+									<!-- <div class="col-md-6 row">
+											<label for="crdate" class="label-custom col-sm-6">Description</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="keperluan" autocomplete="off" readonly />
+												<mat-error>Description is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div> -->
+									<!-- </div> -->
+
+									<div class="row form-input">
+										<div class="col-md-6 row pt-3 pb-3 check-data clr-data">
+											<label for="crdate" class="label-custom col-sm-6 pl-5">KTP / SIM / PASSPORT</label>
+											<mat-checkbox [checked]="checker" class="ml-3" (change)="showOptions($event)"
+												[disabled]="visitor?.statusVisitor === 'wait-confirm-mob' || visitor?.statusVisitor === 'wait-confirm-web'">
+											</mat-checkbox>
+										</div>
+
+									</div>
+									<!-- <div class="row form-input" [hidden]="!checker"> -->
+									<div class="row form-input" [hidden]="!checker">
+										<div class="col-md-6 row pb-3 clr-data">
+											<label for="crdate" class="label-custom col-sm-6 pl-5">Tipe</label>
+											<mat-form-field class="inpt-custom mat-form-field-fluid col-sm-6" readonly>
+												<mat-select class="inpt-custom" formControlName="idCardType">
+													<mat-option (click)="clickLainnya('')" value="ktp">KTP</mat-option>
+													<mat-option (click)="clickLainnya('')" value="sim">SIM</mat-option>
+													<mat-option (click)="clickLainnya('')" value="passport">PASSPORT</mat-option>
+													<mat-option (click)="clickLainnya('lainnya')" value="lainnya">Lainnya...</mat-option>
+												</mat-select>
+												<mat-error>Tipe is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+									<!-- <div class="row form-input" [hidden]="!checker"> -->
+									<div class="row form-input" [hidden]="!checker || openLainnya">
+										<div class="col-md-6 row pb-3 clr-data n-card ">
+											<label for="crdate" class="label-custom col-sm-6 pl-5">ID Card Number</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input onkeyup="this.value=this.value.replace(/[^\d]/,'')" matInput class="inpt-custom"
+													formControlName="idCardNo" autocomplete="off" />
+												<mat-error>ID Card Number is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+									<!-- If Lainnya -->
+									<div class="row form-input" [hidden]="!openLainnya">
+										<div class="col-md-6 row pb-3 clr-data n-card">
+											<label for="crdate" class="label-custom col-sm-6 pl-5">Lainnya Desc</label>
+											<mat-form-field class="mat-form-field-fluid col-sm-6">
+												<input matInput class="inpt-custom" formControlName="idCardNo" autocomplete="off" />
+												<mat-error>Lainnya Desc is
+													<strong>required</strong>
+												</mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<!-- Form Input END -->
+						<!-- Upload Image START -->
+						<!-- NEW STYLE UPLOAD IMAGE START -->
+						<div class="form-group kt-form__group row" [hidden]="visitor?.statusVisitor === 'wait-confirm-mob'">
+							<h6 class="pl-3">Kartu Identitas</h6>
+							<div class="preview col-lg-12 kt-margin-bottom-20-mobile">
+								<div class="preview__container">
+									<div class="preview__container-images mb-3">
+										<div *ngFor="let image of images" class="preview__frame">
+											<img [src]="visitor?.attachment && myFiles.length === 0 ? image : image.url" draggable="false">
+
+											<button class="preview__frame-stack" (click)="removeSelectedFile(image, '')">
+												<span>Delete Image</span>
+											</button>
+										</div>
+									</div>
+
+									<!-- <div class="preview__container-text">
+										<span *ngIf="images.length || myFiles.length"><span class="text-bold">{{ myFiles.length
+												}}</span> images selected.</span>
+										<span *ngIf="images.length === 0 || myFiles.length === 0">Upload Card ID (optional)</span>
+									</div> -->
+								</div>
+
+								<div class="form-file form-file__container">
+									<label [hidden]="images.length > 0"
+										[ngClass]="{'btn btn-primary': true, 'btn-disabled': images.length >=1 || myFiles.length >=1}">
+										<i class="fa fa-upload"></i> Select Image
+										<input class="form-file__input" type="file" #fileInput (change)="selectFileUpload($event, '')"
+											accept="image/*" multiple [disabled]="images.length ===1 || myFiles.length ===1">
+									</label>
+
+									<button class="mt-3" *ngIf="images.length || myFiles.length" type="button" class="btn btn-danger"
+										(click)="clearSelection('')">
+										<i class="fa fa-trash"></i> Delete Image
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- NEW STYLE UPLOAD IMAGE END -->
+						<!-- NEW STYLE UPLOAD IMAGE START -->
+						<div class="form-group kt-form__group row" [hidden]="visitor?.statusVisitor === 'wait-confirm-mob'">
+							<h6 class="pl-3">Foto Visitor</h6>
+							<div class="preview col-lg-12 kt-margin-bottom-20-mobile">
+								<div class="preview__container">
+									<div class="preview__container-images mb-3">
+										<div *ngFor="let image of imagesVisitorPict" class="preview__frame">
+											<img [src]="visitor?.visitorAttachment && myFilesVisitorPict.length === 0 ? image : image.url"
+												draggable="false">
+
+											<button class="preview__frame-stack" (click)="removeSelectedFile(image, 'visitorPict')">
+												<span>Delete Image</span>
+											</button>
+										</div>
+									</div>
+
+									<!-- <div class="preview__container-text">
+										<span *ngIf="imagesVisitorPict.length || myFilesVisitorPict.length"><span class="text-bold">{{ myFilesVisitorPict.length
+												}}</span> imagesVisitorPict selected.</span>
+										<span *ngIf="imagesVisitorPict.length === 0 || myFilesVisitorPict.length === 0">Upload Card ID (optional)</span>
+									</div> -->
+								</div>
+
+								<div class="form-file form-file__container">
+									<label [hidden]="imagesVisitorPict.length > 0"
+										[ngClass]="{'btn btn-primary': true, 'btn-disabled': imagesVisitorPict.length >=1 || myFilesVisitorPict.length >=1}">
+										<i class="fa fa-upload"></i> Select Image
+										<input class="form-file__input" type="file" #fileInput
+											(change)="selectFileUpload($event, 'visitorPict')" accept="image/*" multiple
+											[disabled]="imagesVisitorPict.length ===1 || myFilesVisitorPict.length ===1">
+									</label>
+
+									<button class="mt-3" *ngIf="imagesVisitorPict.length || myFilesVisitorPict.length" type="button"
+										class="btn btn-danger" (click)="clearSelection('visitorPict')">
+										<i class="fa fa-trash"></i> Delete Image
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- NEW STYLE UPLOAD IMAGE END -->
+					</div>
+				</section>
+			</mat-tab>
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-ruler"></i>
+					<p class="sty-default m-0 p-0"> Image </p>
+				</ng-template>
+				<section class="packageManagement">
+					<div class="section row">
+						<div class="form-image-container col-md-6">
+							<h5 class="sty-default">Kartu Identitas</h5>
+							<a target="blank" *ngFor="let image of images" href="{{image}}">
+								<img crossorigin="anonymous" width="250" class="mr-2 mb-2" src="{{image}}">
+							</a>
+							<div class="no-image" *ngIf="images.length === 0">
+								<span>No attached image !</span>
+							</div>
+						</div>
+						<div class="form-image-container col-md-6">
+							<h5 class="sty-default">Foto Visitor</h5>
+							<a target="blank" *ngFor="let image of imagesVisitorPict" href="{{image}}">
+								<img crossorigin="anonymous" width="250" class="mr-2 mb-2" src="{{image}}">
+							</a>
+							<div class="no-image" *ngIf="imagesVisitorPict.length === 0">
+								<span>No attached image !</span>
+							</div>
+						</div>
+					</div>
+				</section>
+			</mat-tab>
+		</mat-tab-group>
+	</kt-portlet-body>
+</kt-portlet>

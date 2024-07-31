@@ -1,0 +1,247 @@
+
+<ng-template [ngIf]="!loading && data" [ngIfElse]="onLoading">
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+    <h1 class="title col-md-2">Billing IPL</h1>
+    <!-- <span class="line col-md-10"></span> -->
+  </div>
+
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-green full-width">
+      <div class="row">
+        <div class="col-md-3 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money.svg'"></span>
+        </div>
+  
+        <div class="col-md-9 ds-panel__section">
+          <span class="ds-panel__section-label">Total IPL</span>
+          <span class="ds-panel__section-value" style="font-size: 20px;">Rp. {{ data?.billingIPL?.all?.nominal }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-6">
+        <div class="ds-panel bg-red full-width">
+          <div class="row">
+            <div class="col-md-3 ds-panel__icon">
+              <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money2.svg'"></span>
+            </div>
+      
+            <div class="col-md-9 ds-panel__section">
+              <span class="ds-panel__section-label"> Unpaid </span>
+              <span class="ds-panel__section-valueSecond">Rp. {{ data?.billingIPL?.unpaid?.nominal }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="ds-panel bg-white full-width">
+        <div class="row">
+          <div class="col-md-3 ds-panel__icon">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money3.svg'"></span>
+          </div>
+    
+          <div class="col-md-9 ds-panel__section">
+            <span class="ds-panel__section-label" style="color: #81D07A;"> Paid </span>
+            <span class="ds-panel__section-valueSecond" style="color: #81D07A;">Rp. {{ data?.billingIPL?.paid?.nominal }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+    <h1 class="title col-md-3">Billing Power</h1>
+    <!-- <span class="line col-md-10"></span> -->
+  </div>
+
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-orange full-width">
+      <div class="row">
+        <div class="col-md-3 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/data.svg'"></span>
+        </div>
+  
+        <div class="col-md-9 ds-panel__section">
+          <span class="ds-panel__section-label">Total Billing Power</span>
+          <span class="ds-panel__section-value">Rp. {{ data?.billingPower?.total }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-6">
+        <div class="ds-panel bg-red full-width">
+          <div class="row">
+            <div class="col-md-3 ds-panel__icon">
+              <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money2.svg'"></span>
+            </div>
+      
+            <div class="col-md-9 ds-panel__section">
+              <span class="ds-panel__section-label"> Unpaid </span>
+              <span class="ds-panel__section-valueSecond">Rp. {{ data?.billingPower?.unpaid }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ds-panel bg-white full-width">
+        <div class="row">
+          <div class="col-md-3 ds-panel__icon">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/money3.svg'"></span>
+          </div>
+          <div class="col-md-9 ds-panel__section">
+            <span class="ds-panel__section-label" style="color: #81D07A;"> Paid </span>
+            <span class="ds-panel__section-valueSecond" style="color: #81D07A;">Rp. {{ data?.billingPower?.paid }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+    <h1 class="title col-md-3">Deposit</h1>
+    <!-- <span class="line col-md-10"></span> -->
+  </div>
+
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-white full-width">
+      <div>
+        <span style="color: black;">Deposit In</span>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-4 ds-panel__section">
+          <div>
+            <span class="ds-panel__section-label" style="color:#81D07A
+            ">Rp. {{ data?.deposit?.in?.security }}</span>
+          </div>
+          <div style="margin-top: 20px;">
+            <span class=".ds-panel__section-valueDeposit" style="color: #81D07A
+            ;" >Security Deposit</span>
+          </div>
+         </div>
+  
+        <div class="col-md-4 ds-panel__section bl-4-solid " >
+            <div>
+              <span class="ds-panel__section-label" style="color: #6171F9;">Rp. {{ data?.deposit?.in?.lease }}</span>
+            </div>
+            
+            <div style="margin-top: 20px;">
+              <span class=".ds-panel__section-valueDeposit" style="color: #6171F9
+              ">Lease</span>
+            </div>
+        </div>
+
+        <div class="col-md-4 ds-panel__section">
+            <div>
+              <span class="ds-panel__section-label" style="color: #E7B201;">Rp. {{ data?.deposit?.in?.fittingOut }}</span>
+            </div>
+            
+            <div style="margin-top: 20px;">
+              <span class=".ds-panel__section-valueDeposit" style="color: #E7B201;">Fitting Out</span>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-white full-width">
+      <div>
+        <span style="color: black;">Deposit Out</span>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-4 ds-panel__section">
+          <div>
+            <span class="ds-panel__section-label" style="color: #DC6464;">Rp. {{ data?.deposit?.out?.security }}</span>
+          </div>
+          <div style="margin-top: 20px;">
+            <span class=".ds-panel__section-valueDeposit" style="color: #DC6464;" >Security Deposit</span>
+          </div>
+         </div>
+  
+        <div class="col-md-4 ds-panel__section bl-4-solid " >
+            <div>
+              <span class="ds-panel__section-label" style="color: #6171F9;">Rp. {{ data?.deposit?.out?.lease }}</span>
+            </div>
+            
+            <div style="margin-top: 20px;">
+              <span class=".ds-panel__section-valueDeposit" style="color: #6171F9
+              ">Lease</span>
+            </div>
+        </div>
+
+        <div class="col-md-4 ds-panel__section">
+            <div>
+              <span class="ds-panel__section-label" style="color: #E7B201;">Rp. {{ data?.deposit?.out?.fittingOut }}</span>
+            </div>
+            
+            <div style="margin-top: 20px;">
+              <span class=".ds-panel__section-valueDeposit" style="color: #E7B201;">Fitting Out</span>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 row d-flex align-items-center">
+    <h1 class="title col-md-3">Cash & Bank</h1>
+    <!-- <span class="line col-md-10"></span> -->
+  </div>
+
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-4">
+        <div class="ds-panel bg-blue full-width">
+            <div class="col-md-12 ds-panel__section">
+              <span class="ds-panel__section-label" style="font-size: 23px;"> AR Transaction </span>
+              <span class="ds-panel__section-valueSecond" style="color: black;">Rp. {{ data?.cashBank?.AR }}</span>
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-md-4">
+      <div class="ds-panel bg-green full-width">
+          <div class="col-md-12 ds-panel__section">
+            <span class="ds-panel__section-label"  style="font-size: 23px;" > Cash & Bank </span>
+            <span class="ds-panel__section-valueSecond" style="color: black;" >Rp. {{ data?.cashBank?.cashBank }}</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="ds-panel bg-orange full-width">
+          <div class="col-md-12 ds-panel__section">
+            <span class="ds-panel__section-label"  style="font-size: 23px;"> AP Transaction </span>
+            <span class="ds-panel__section-valueSecond" style="color: black;" >Rp. {{ data?.cashBank?.AP }}</span>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+</ng-template>
+
+<ng-template #onLoading>
+  <div *ngIf="loading; else hasError" class="col-md-12 loader animated">
+    <mat-spinner diameter="35"></mat-spinner>
+    <p>Loading Content</p>
+  </div>
+
+  <ng-template #hasError>
+    <div class="col-md-12 failure animated">
+      <p>Something went wrong, click the button below to try again.</p>
+      <button (click)="loadData()">
+        Let's try again
+      </button>
+    </div>
+  </ng-template>
+</ng-template>

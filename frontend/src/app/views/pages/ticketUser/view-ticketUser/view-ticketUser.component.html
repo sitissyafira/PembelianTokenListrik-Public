@@ -1,0 +1,178 @@
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/UserTicket']" class="btn btn-secondary kt-margin-r-10" mat-raised-button >
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<!-- <a href="javascript:;" class="kt-margin-r-10" (click)="reset()" [disabled]="selectedTab !== 0" mat-raised-button>
+				<i class="la la-cog"></i>
+				<span class="kt-hidden-mobile">Reset</span>
+			</a>
+			<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="submitForm()" mat-raised-button >
+				<span class="kt-hidden-mobile">Save</span>
+			</a> -->
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<mat-tab-group [(selectedIndex)]="selectedTab">
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-user"></i>
+					Ticket Info
+				</ng-template>
+				<ng-template matTabContent>
+					<!--begin::Form-->
+					<div *ngIf="ticket">
+						<form [formGroup]="ticketForm" class="kt-form kt-form--group-seperator-dashed">
+							<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+								Oh snap! Change a few things up and try submitting again.
+							</kt-alert>
+							<div class="kt-form__section kt-form__section--first">
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Ticket Id" formControlName="ticketId"/>
+											<mat-error>Ticket Code is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field>
+											<input matInput [matDatepicker]="crtdt" placeholder="Ticket Date" formControlName="ticketdate"/>
+											<mat-datepicker-toggle matSuffix [for]="crtdt"></mat-datepicker-toggle>
+											<mat-datepicker #crtdt></mat-datepicker>
+											<mat-error>Ticket Date is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Unit" formControlName="contract" #unt (selectionChange)="getUnitId(unt.value)">
+												<mat-option *ngFor="let item of unitResult" [value]="item._id" >
+												{{item.unit.cdunt}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Tenant Name" formControlName="tenant_name" />
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Tenant Phone" formControlName="tenant_phone" />
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Tenant Email " formControlName="tenant_email" />
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Subject Ticket" formControlName="subject"/>
+											<mat-error>Subject is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Ticket Status" formControlName="status"/>
+											<mat-error>Status is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Ticket Priority" formControlName="priority"/>
+											<mat-error>Priority is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Category" formControlName="category">
+												<mat-option *ngFor="let item of cResult" [value]="item._id" >
+												{{item.name}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Detail Category" formControlName="dcategory" #def (selectionChange)="defectOnChange(def.value)">
+												<mat-option *ngFor="let item of dResult" [value]="item._id" >
+												{{item.defect_name}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="Select Sub Detail Category" formControlName="subDefect" #sub (selectionChange)="subDefectOnChange(sub.value)">
+												<mat-option *ngFor="let item of sResult" [value]="item._id" >
+												{{item.subtype}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput placeholder="Description" formControlName="description"/>
+											<mat-error>Description is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+										
+									</div>
+									<div class="col-lg-4 kt-margin-bottom-20-mobile">
+									
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!--end::Form-->
+				</ng-template>
+			</mat-tab>
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-ruler"></i>
+					Image
+				</ng-template>
+				<ng-template matTabContent>
+					<!--begin::Form-->
+					<div>
+							<div class="kt-form__section kt-form__section--first">
+								<div class="form-group kt-form__group row">
+									<div class="col-lg-12 kt-margin-bottom-20-mobile">
+											<button (click)="getImage()"></button>
+									</div>
+									<div>
+										<img *ngFor='let image of images' [src]="images" height="100px" width="100px" style="margin-left: 20px;">
+									</div>
+								</div>
+							</div>
+					</div>
+					<!--end::Form-->
+				</ng-template>
+			</mat-tab>
+		</mat-tab-group>
+	</kt-portlet-body>
+</kt-portlet>
+

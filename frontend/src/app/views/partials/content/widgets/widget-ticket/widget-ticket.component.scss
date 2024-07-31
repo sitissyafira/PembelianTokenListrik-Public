@@ -1,0 +1,75 @@
+div {
+    color: black;
+}
+.primary {
+    background-color: rgba(15, 18, 63, 1);
+}
+secondary {
+    background-color: rgba(69, 196, 176, 1);
+}
+
+.mark {
+    background: none !important;
+    font-size: 11px;
+    color: white;
+    text-align: center;
+
+    &__title {
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: 600
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &-color {
+            height: 20px;
+            width: 20px;
+            display: inline-block;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom:5px;
+            background-color: lightblue;
+
+            &--new {
+                text-align: center;
+                vertical-align: middle;
+                background-color:rgba(250, 190, 122, 1);
+                color: #fff;
+                padding: 2 2 2 2;
+            }
+
+            &--progress {
+                text-align: center;
+                vertical-align: middle;
+                background-color: rgba(246, 134, 106, 1);
+                color: #fff;
+                padding: 2 2 2 2;
+            }
+
+            &--done {
+                text-align: center;
+                vertical-align: middle;
+                background-color: rgba(89, 230, 246, 1);
+                color: #fff;
+                padding: 2 2 2 2;
+            }
+
+            &--total {
+                text-align: center;
+                vertical-align: middle;
+                background-color:rgba(118, 97, 226, 1);
+                color: #fff;
+                padding: 2 2 2 2;
+            }
+        }
+    }
+
+    &.mt-xs-2 {
+        @media screen and (max-width: 411px) {
+            margin-top: 2em;
+        }
+    }
+}

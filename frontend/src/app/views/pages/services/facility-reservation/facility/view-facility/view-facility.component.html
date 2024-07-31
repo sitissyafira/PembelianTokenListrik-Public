@@ -1,0 +1,172 @@
+<!-- Loading Form... -->
+<kt-portlet *ngIf="!facilityForm">
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/master-facility-reservation']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Kembali</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<section class="facilityReservation">
+			<div class="d-flex justify-content-center">
+				<p>Loading Form...</p>
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Section One -->
+<kt-portlet *ngIf="facilityForm">
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/facility-reservation']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Kembali</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<section class="facilityReservation">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="facilityForm" class="kt-form kt-form--group-seperator-dashed">
+					<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+						(close)="onAlertClose($event)">
+						Oh snap! Change a few things up and try submitting again.
+					</kt-alert>
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+
+							<div class="row form-input">
+								<div class="col-md-6 row">
+									<label for="crdate" class="label-custom col-sm-6">Status Fasilitas</label>
+									<span class="ml-2 chip mb-4"
+										[ngClass]="facility?.status === 'open' ? 'chip--done-confirm ' : 'chip--wait-confirm '">
+										{{facility?.status}}
+									</span>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Tanggal Reservasi</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="tglReservation" autocomplete="off" readonly />
+										<mat-error>Tanggal Reservasi is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Pilih Unit</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="unitName" autocomplete="off" readonly />
+										<mat-error>Pilih Unit is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Nama Tenant</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="customerName" autocomplete="off" readonly />
+										<mat-error>Nama Tenant is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Nomor telepon</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput onkeyup="this.value=this.value.replace(/[^\d]/,'')" class="inpt-custom"
+											[readonly]="!isReservationDate" autocomplete="off" formControlName="phone" />
+										<mat-error>Nomor telepon is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row  mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Kode Fasilitas</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="codeReservation" [value]="'FAC/11/12/2232'"
+											autocomplete="off" readonly />
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- Section Two -->
+<kt-portlet *ngIf="facilityForm">
+	<kt-portlet-header [title]="'Tentukan Reservasi Fasilitas'" [class]="'kt-portlet__head--lg'"
+		[viewLoading$]="loading$">
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<section class="facilityReservation">
+			<div class="section">
+				<!-- Form Input START -->
+				<form [formGroup]="facilityForm" class="kt-form kt-form--group-seperator-dashed">
+					<div class="kt-form__section kt-form__section--first">
+						<div class="form-group">
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Pilih Fasilitas</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="facilityName" autocomplete="off" readonly />
+										<mat-error>Pilih Fasilitas is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row  mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Jumlah Orang</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input type="number" oninput="this.value = 
+										!!this.value && Math.abs(this.value) >= 1 ? Math.abs(this.value) : null" matInput class="inpt-custom"
+											[readonly]="!isReservationDate && !isChooseTime" formControlName="people_qty"
+											autocomplete="off" />
+										<mat-error>Jumlah Orang is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row form-input">
+								<div class="col-md-6 row mb-3">
+									<label for="crdate" class="label-custom col-sm-6">Pilih Waktu</label>
+									<mat-form-field class="mat-form-field-fluid col-sm-6">
+										<input matInput class="inpt-custom" formControlName="reservationTimeName" autocomplete="off"
+											readonly />
+										<mat-error>Pilih Waktu is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Form Input END -->
+			</div>
+		</section>
+	</kt-portlet-body>
+</kt-portlet>

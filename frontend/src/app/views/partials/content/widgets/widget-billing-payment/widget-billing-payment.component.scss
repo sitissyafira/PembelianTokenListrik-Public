@@ -1,0 +1,70 @@
+div {
+    color: black;
+}
+.primary {
+    background-color: rgba(15, 18, 63, 1);
+}
+secondary {
+    background-color: rgba(69, 196, 176, 1);
+}
+
+.mark {
+    background: none !important;
+    font-size: 11px;
+    color: white;
+    text-align: center;
+
+    &__title {
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: 600
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &-color {
+            height: 15px;
+            width: 15px;
+            display: inline-block;
+            border-radius: px;
+            margin-right: 5px;
+            background-color: lightblue;
+
+            &--new {
+                background-color:rgba(250, 190, 122, 1);
+            }
+
+            &--progress {
+                background-color: rgba(246, 134, 106, 1);
+            }
+
+            &--done {
+                background-color: rgba(89, 230, 246, 1);
+            }
+
+            &--total {
+                background-color:rgba(118, 97, 226, 1);
+            }
+        }
+    }
+
+    &.mt-xs-2 {
+        @media screen and (max-width: 411px) {
+            margin-top: 2em;
+        }
+    }
+}
+.count{
+    color:#FEB95A;
+}
+.all{
+    color:#20AEF3;
+}
+.paid{
+    color:#ED72DE;
+}
+.outstanding{
+    color: #F85F5F
+}

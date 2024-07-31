@@ -1,0 +1,48 @@
+div {
+    color: black;
+}
+.progress-total-header {
+    color: #000000;
+    margin-top:20px;
+    margin-left:20pxpx;
+  }
+  .progress-total {
+    border-radius: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    &.dark{
+      border:2px solid #1E0050;
+      color:#1E0050;
+      background-color:#A9DFD812
+    }
+    &.primary {
+      border:2px solid #28AEF3;
+      color:#28AEF3;
+      background-color:#28AEF312
+    }
+    &.warning {
+      border:1px solid #FCB859;
+      color:#FCB859;
+      background-color:#FCB85912
+    }
+  }
+   .mat-progress-bar-buffer.mat-progress-bar-element {
+    background-color: #ddd;
+  }
+  
+  table {
+    width: fit-content;
+  }
+  .mat-table {
+    min-width: 100px !important;
+    overflow-x: hidden;
+  }
+  
+  .mat-column-position {
+    flex: 0 0 7% !important;
+  }
+  .mat-column-title {
+    flex: 0 0 7% !important;
+  }

@@ -1,0 +1,218 @@
+<kt-portlet>
+	<kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/transaksi-topup']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<!-- <button class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSubmit(false)" mat-raised-button
+				[disabled]="loading.submit">
+				<span class="kt-hidden-mobile">Save</span>
+			</button> -->
+		</ng-container>
+		<!-- <ng-container ktPortletTools>
+			<button mat-raised-button color="primary" class="mr-2" (click)="openLarge(content6)"
+				[hidden]="role === 'manager'">Generate</button>
+		</ng-container> -->
+	</kt-portlet-header>
+
+	<!-- section one -->
+	<kt-portlet-body>
+		<div class="row">
+			<div class="col-sm-3">
+				<p class="font-weight-custom">ID Transaksi</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-custom">: {{topup.cdTransaksi}}</p>
+			</div>
+			<div class="col-sm-3">
+				<p class="font-weight-custom">Tanggal Transaksi</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-custom">: {{topup.tglTransaksi}}</p>
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>
+
+<!-- section two -->
+<kt-portlet>
+	<kt-portlet-body>
+		<div class="row">
+			<div class="col-sm-3">
+				<p class="font-weight-custom">No Unit</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-custom">: {{topup.nameUnit}}</p>
+			</div>
+			<div class="col-sm-3">
+				<p class="font-weight-custom">Orderan</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-custom">: {{topup.namePrabayar}}</p>
+			</div>
+			<div class="col-sm-3">
+				<p class="font-weight-custom">Harga</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-custom">: {{topup.rate}}</p>
+			</div>
+			<div class="col-sm-3">
+				<p class="font-weight-custom">Biaya Admin</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-custom">: {{topup.adminRate}}</p>
+			</div>
+			<div class="col-sm-3">
+				<p class="font-weight-custom">Total Biaya</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-bold">: {{topup.totalBiaya}}</p>
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>
+<!-- section three -->
+<kt-portlet>
+	<kt-portlet-body>
+		<div class="row">
+			<div class="col-sm-3">
+				<p class="font-weight-custom">Metode Pembayaran</p>
+			</div>
+			<div class="col-sm-9">
+				<p class="font-weight-custom">: {{topup?.mtdPembayaran == "manual" ? "Transfer Manual" :
+					topup?.mtdPembayaran == "online payment" ?
+					"Online Payment" : topup?.mtdPembayaran == "edc" ? "EDC" : topup?.mtdPembayaran == "cash" ? "Cash" :
+					topup?.mtdPembayaran}}</p>
+			</div>
+		</div>
+		<div class="tf-style" [ngClass]="checkDetailMtdPembayaranEDC ? '' : 'd-none'">
+			<!-- EDC INPUT START -->
+			<div class="from-tf" [ngClass]="checkDetailMtdPembayaranEDC ? '' : 'd-none'">
+				<div class="d-flex flex-column">
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="font-weight-custom">No Kartu</p>
+						</div>
+						<div class="col-sm-3">
+							<p class="font-weight-custom">: {{topup.card_no}}</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="font-weight-custom">Atas Nama Kartu</p>
+						</div>
+						<div class="col-sm-3">
+							<p class="font-weight-custom">: {{topup.name_card | uppercase}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- EDC INPUT END -->
+		</div>
+		<div class="tf-style" [ngClass]="checkDetailMtdPembayaran ? '' : 'd-none'">
+			<div class="d-flex row">
+
+				<div class="from-tf row col-sm-6">
+					<div class="col-sm-6">
+						<p class="font-weight-custom">Dari Bank Transfer</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">: {{topup?.bank_tf}}</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">Account No</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">: {{topup?.account_no}}</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">Account Name</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">: {{topup?.account_name | uppercase}}</p>
+					</div>
+				</div>
+				<div class="to-tf row col-sm-6">
+					<div class="col-sm-4">
+						<p class="font-weight-custom">Ke No.Virtual Account</p>
+					</div>
+					<div class="col-sm-8">
+						<p class="font-weight-custom" [ngClass]="topup?.companyBank === null ? 'text-danger': ''">:
+							{{topup?.companyBank === null || topup?.companyBank === '' ? "Masukkan VA
+							Power di Contract!":
+							topup?.companyBank}}</p>
+					</div>
+					<!-- <div class="col-sm-6">
+						<p class="font-weight-custom">Ke Bank Transfer</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">: {{topup?.companyBank}}</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">Account No</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">: {{topup?.accountNumberCompany}}</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom">Account Name</p>
+					</div>
+					<div class="col-sm-6">
+						<p class="font-weight-custom text-uppercase">: {{topup?.nameCompany}}</p>
+					</div> -->
+				</div>
+
+
+			</div>
+		</div>
+
+		<!-- cash and edc -->
+		<div class="input-detail row">
+			<div class="col-lg-3"
+				[ngClass]="topup.proof_of_payment === undefined || topup.proof_of_payment === null ? 'd-none' : ''">
+				<p class="font-weight-custom m-0">Bukti Transfer</p>
+				<a href={{topup.imagePayment}} target="_blank">
+					<img src={{topup.imagePayment}} style="width: 150px;height: 150px; border-radius: 8px;">
+				</a>
+			</div>
+			<div class="col-lg-2 paid ml-3" [ngClass]="topup.statusPayment === 'done' ? '' : 'd-none'">
+				<label for="paid" class="m-0 font-weight-bold">PAID</label>
+				<input type="checkbox" name="paid" id="paid" checked disabled>
+			</div>
+			<!-- detail and edit start -->
+			<div class="col-lg-3 kt-margin-bottom-20-mobile p-0" [ngClass]="checkNoToken ? 'd-none' : '' ">
+				<mat-form-field class="mat-form-field-fluid">
+					<input type="number" matInput placeholder="No Token" [value]="topup.noToken" readonly />
+				</mat-form-field>
+			</div>
+			<!-- detail and edit end -->
+			<!-- detail and edit start -->
+			<div class="col-lg-3 kt-margin-bottom-20-mobile p-0" [ngClass]="checkEngineer ? 'd-none' : ''">
+				<mat-form-field class="mat-form-field-fluid">
+					<input type="text" matInput placeholder="Engineer" [value]="topup.engineer" readonly />
+				</mat-form-field>
+			</div>
+			<!-- detail and edit end -->
+
+		</div>
+		<div class="row">
+			<!-- <div class="col-lg-6"></div> -->
+			<!-- <div class="col-lg-6 d-flex justify-content-between"> -->
+			<!-- <div></div> -->
+			<div>
+				<p class="font-weight-custom m-0"
+					[ngClass]="progressEngineerImage === '' || progressEngineerImage === undefined || progressEngineerImage === null ? 'd-none' : ''">
+					Report Engineer</p>
+				<div class="col-lg-3"
+					[ngClass]="progressEngineerImage === '' || progressEngineerImage === undefined || progressEngineerImage === null ? 'd-none' : ''">
+					<a href={{progressEngineerImage}} target="_blank">
+						<img src={{progressEngineerImage}} style="width: 150px;height: 150px; border-radius: 8px;">
+					</a>
+				</div>
+
+				<!-- </div> -->
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

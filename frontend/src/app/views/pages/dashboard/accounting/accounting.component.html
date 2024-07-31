@@ -1,0 +1,145 @@
+
+<ng-template [ngIf]="!loading && data" [ngIfElse]="onLoading">
+  <div class="col-sm-12 col-md-12 animated">
+    <div class="ds-panel bg-blue full-width">
+      <div class="row">
+        <div class="col-md-2 ds-panel__icon">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/building.svg'"></span>
+        </div>
+  
+        <div class="col-md-5 ds-panel__section">
+          <span class="ds-panel__section-label">Total Unit  ACCOUNTING</span>
+          <span class="ds-panel__section-value">{{ data?.unit.total }}</span>
+        </div>
+  
+        <div class="col-md-5 ds-panel__section has-multiple-child">
+          <div class="ds-panel__mini-section">
+            <span class="ds-panel__mini-section-value">{{ data?.unit.bast }}</span>
+            <span class="ds-panel__mini-section-label">BAST</span>
+          </div>
+          <div class="ds-panel__mini-section">
+            <span class="ds-panel__mini-section-value">{{ data?.unit.available }}</span>
+            <span class="ds-panel__mini-section-label">Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-sm-12 col-md-12 row animated">
+    <div class="col-md-5">
+      <div class="ds-panel full-height bg-orange">
+        <div class="row">
+          <div class="col-md-3 pl-0 d-flex align-items-center justify-content-center">
+            <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/ticket.svg'"></span>
+          </div>
+          <div class="col-md-9 d-flex align-items-center">
+            <span class="ds-panel__label">Accounting Total Ticket</span>
+          </div>
+        </div>
+  
+        <div class="offset-md-3 col-md-9">
+          <span class="ds-panel__value">{{ data?.ticket.total }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-7 panel-inline-grouping">
+      <!-- Full inline panel -->
+      <div class="ds-panel full-inline bg-red row">
+        <div class="col-md-1 d-flex align-items-center p-0">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/ticket-open.svg'"></span>
+        </div>
+        <div class="col-md-7 d-flex align-items-center ds-panel__label">
+          <span class="ds-panel__label-text">Ticketing (Open)</span>
+        </div>
+        <div class="col-md-4 d-flex align-items-center justify-content-center bl-4-solid">
+          <span class="ds-panel__value">{{ data?.ticket.open.total }}</span>
+        </div>
+      </div>
+      <!-- ./Full inline panel -->
+      
+      <div class="ds-panel full-inline bg-brown row">
+        <div class="col-md-1 d-flex align-items-center p-0">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/ticket-progress.svg'"></span>
+        </div>
+        <div class="col-md-7 d-flex align-items-center ds-panel__label">
+          <span class="ds-panel__label-text">Ticketing (Progress)</span>
+        </div>
+        <div class="col-md-4 d-flex align-items-center justify-content-center bl-4-solid">
+          <span class="ds-panel__value">{{ data?.ticket.progress.total }}</span>
+        </div>
+      </div>
+  
+      <div class="ds-panel full-inline bg-pink row">
+        <div class="col-md-1 d-flex align-items-center p-0">
+          <span class="kt-grid-nav__icon" [inlineSVG]="'./assets/media/icons/svg/Dashboard/ticket-done.svg'"></span>
+        </div>
+        <div class="col-md-7 d-flex align-items-center ds-panel__label">
+          <span class="ds-panel__label-text">Ticketing (Done)</span>
+        </div>
+        <div class="col-md-4 d-flex align-items-center justify-content-center bl-4-solid">
+          <span class="ds-panel__value">{{ data?.ticket.done.total }}</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="col-sm-12 mt-4 animated">
+    <div class="ds-progress">
+      <div class="ds-progress-label">
+        <span class="ds-progress-label-text">Ticketing (Open)</span>
+        <span class="ds-progress-label-value">
+          {{ '(' + data?.ticket.open.total + '/' + data?.ticket.total + ') ' + (data?.ticket.open.percentage ? data?.ticket.open.percentage : '0') + '%' }}
+        </span>
+      </div>
+  
+      <div class="ds-progress-bar">
+        <div class="ds-progress-bar-inner" [ngStyle]="{'width': data?.ticket.open.percentage + '%'}"></div>
+      </div>
+    </div>
+  
+    <div class="ds-progress">
+      <div class="ds-progress-label">
+        <span class="ds-progress-label-text">Ticketing (Progress)</span>
+        <span class="ds-progress-label-value">
+          {{ '(' + data?.ticket.progress.total + '/' + data?.ticket.total + ') ' + (data?.ticket.progress.percentage ? data?.ticket.progress.percentage : '0') + '%' }}
+        </span>
+      </div>
+  
+      <div class="ds-progress-bar brown">
+        <div class="ds-progress-bar-inner" [ngStyle]="{'width': data?.ticket.progress.percentage + '%'}"></div>
+      </div>
+    </div>
+  
+    <div class="ds-progress">
+      <div class="ds-progress-label">
+        <span class="ds-progress-label-text">Ticketing (Done)</span>
+        <span class="ds-progress-label-value">
+          {{ '(' + data?.ticket.done.total + '/' + data?.ticket.total + ') ' + (data?.ticket.done.percentage ? data?.ticket.done.percentage : '0') + '%' }}
+        </span>
+      </div>
+  
+      <div class="ds-progress-bar pink">
+        <div class="ds-progress-bar-inner" [ngStyle]="{'width': data?.ticket.done.percentage + '%'}"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #onLoading>
+  <div *ngIf="loading; else hasError" class="col-md-12 loader animated">
+    <mat-spinner diameter="35"></mat-spinner>
+    <p>Loading Content</p>
+  </div>
+
+  <ng-template #hasError>
+    <div class="col-md-12 failure animated">
+      <p>Something went wrong, click the button below to try again.</p>
+      <button (click)="loadData()">
+        Let's try again
+      </button>
+    </div>
+  </ng-template>
+</ng-template>

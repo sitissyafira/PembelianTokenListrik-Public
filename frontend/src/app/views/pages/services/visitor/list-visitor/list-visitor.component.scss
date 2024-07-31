@@ -1,0 +1,69 @@
+::ng-deep .mat-sort-header-container:not(.mat-sort-header-sorted) .mat-sort-header-arrow {
+    opacity: 0.54 !important;
+    transform: translateY(0px) !important;
+}
+
+.divider {
+    margin: 0 1em
+}
+
+.fntInput {
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+}
+
+.sty-default {
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.chip {
+    display: inline-block;
+    padding: 5px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: lowercase;
+    background-color: lightblue;
+    border-radius: 25px;
+    text-align: center;
+
+    &--reject {
+        color: #fff;
+        background-color: #fd397a;
+    }
+
+    &--wait-confirm {
+        background-color: #FBB75126;
+        color: #FBB751;
+    }
+
+    &--approve {
+        background-color: #21E15726;
+        color: #21E157;
+    }
+
+    &--check-in {
+        background-color: #3021E126;
+        color: #3021E1;
+    }
+
+    &--check-out {
+        color: #5c5c5caa;
+        background-color: #d3d3d35e;
+    }
+
+    &--cancel {
+        color: #fff;
+        background-color: #b46c00;
+    }
+
+    &--opened {
+        color: #5c5c5caa;
+        background-color: #d3d3d35e;
+    }
+
+    &--new {
+        color: #fff;
+        background-color: #b46c00;
+    }
+}

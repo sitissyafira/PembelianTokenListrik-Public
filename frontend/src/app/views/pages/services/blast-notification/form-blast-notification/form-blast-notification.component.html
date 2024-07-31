@@ -1,0 +1,103 @@
+<kt-portlet>
+	<kt-portlet-header [title]="mode + ' Blast Notification'" class="kt-portlet__head--lg">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/blast-news']" class="btn btn-secondary kt-margin-r-10" mat-raised-button>
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<button *ngIf="!readOnly" class="btn btn-primary kt-margin-r-10" color="primary" mat-raised-button [disabled]="loading" (click)="submit()">
+				<div class="btn__wrapper">
+					<mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+					<span class="kt-hidden-mobile">Send Notification</span>
+				</div>
+			</button>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+
+		<mat-tab-group [(selectedIndex)]="selectedTab">
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<i class="mat-tab-label-icon fa fa-user"></i>
+					Blast Notification Form
+				</ng-template>
+
+				<ng-template matTabContent>
+					<form [formGroup]="formGroup" class="kt-form kt-form--group-seperator-dashed">
+						<kt-alert *ngIf="hasError" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose()">
+							Oh snap! Change a few things up and try submitting again.
+						</kt-alert>
+
+						<div class="kt-form__section kt-form__section--first">
+							
+							<div class="form-group kt-form__group row">
+								<div class="col-lg-12 kt-margin-bottom-20-mobile">
+									<mat-form-field class="mat-form-field-fluid">
+										<input matInput placeholder="Title" formControlName="title" autocomplete="off" maxlength="50"/>
+										<mat-error>Title is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+
+							<div class="form-group kt-form__group row">
+								<div class="col-lg-12 kt-margin-bottom-20-mobile">
+									<mat-form-field class="mat-form-field-fluid">
+										<input matInput placeholder="Text" formControlName="text" autocomplete="off" maxlength="50"/>
+										<mat-error>Text is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							
+							<div class="form-group kt-form__group row">
+								<div class="col-lg-12 kt-margin-bottom-20-mobile">
+									<mat-form-field class="mat-form-field-fluid">
+										<textarea matInput placeholder="Description" formControlName="description" autocomplete="off"></textarea>
+										<mat-error>Description is
+											<strong>required</strong>
+										</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+
+							<!-- Input image file -->
+							<div class="form-group kt-form__group row">
+								<div class="preview col-lg-12 kt-margin-bottom-20-mobile">
+									<div class="preview__container">
+										<div class="preview__container-images">
+											<div *ngFor="let image of images" class="preview__frame">
+												<img [src]="image.url" draggable="false">
+											</div>
+										</div>
+
+										<div class="preview__container-text">
+											<span *ngIf="images.length || myFiles.length"><span class="text-bold">{{ myFiles[0].name }}</span>{{!readOnly ? ' selected.' : ''}}</span>
+											<span *ngIf="images.length === 0 || myFiles.length === 0">No selected image.</span>
+										</div>
+									</div>
+									
+									<div *ngIf="!readOnly" class="form-file form-file__container">
+										<label class="btn btn-primary">
+											<i class="fa fa-upload"></i> Select Image
+											<input class="form-file__input" type="file" #fileInput (change)="selectFile($event)" accept="image/*">
+										</label>
+										
+										<button *ngIf="images.length || myFiles.length" type="button" class="btn btn-danger" (click)="clearSelection()">
+											<i class="fa fa-trash"></i> Remove Image
+										</button>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</form>
+				</ng-template>
+			</mat-tab>
+		</mat-tab-group>
+
+	</kt-portlet-body>
+</kt-portlet>
